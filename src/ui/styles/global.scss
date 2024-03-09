@@ -1,0 +1,50 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Manrope", sans-serif;
+}
+
+a {
+    text-decoration: none;
+    cursor: pointer;
+    -webkit-user-drag: none;
+}
+
+button {
+    border: none;
+    cursor: pointer;
+    background: none;
+    user-select: none;
+}
+
+button:disabled {
+    cursor: default;
+    pointer-events: none;
+}
+
+img,
+svg {
+    display: block;
+}
+
+input,
+textarea {
+    border: none;
+    outline: none;
+    background: none;
+}
+
+h5 {
+    color: var(--color-components-text-neutral-secondary);
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 120%;
+}
+
+h4 {
+    color: var(--color-components-text-neutral);
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 120%;
+}
