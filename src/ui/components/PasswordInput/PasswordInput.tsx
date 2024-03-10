@@ -50,9 +50,11 @@ export const PasswordInput = ({
                             disabled={disabled}
                             type="tertiary"
                             color="neutral"
+                            pale={true}
+
                             /* focused={isInputFocused} */ onClick={() => setShowPass(!showPass)}
                         >
-                            <IconDontShowPass />
+                            < IconShowPass/>
                         </ButtonIcon>
                     ) : (
                         <ButtonIcon
@@ -63,7 +65,7 @@ export const PasswordInput = ({
                             /* focused={isInputFocused} */ color="neutral"
                             onClick={() => setShowPass(!showPass)}
                         >
-                            <IconShowPass />
+                            <IconDontShowPass />
                         </ButtonIcon>
                     )
                 }

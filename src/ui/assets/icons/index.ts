@@ -19,10 +19,16 @@ import IconPlus from "./Plus.svg?react";
 import IconSettings from "./Settings.svg?react";
 import IconQuestion from "./Question.svg?react";
 import IconUser from "./User.svg?react";
+import IconUserRounded from "./UserRounded.svg?react";
+
 import IconSearch from "./Search.svg?react";
 import IconSort from "./Sort.svg?react";
 import IconClose from "./Close.svg?react";
+import IconClear from "./Clear.svg?react";
+
 import IconHome from "./Home.svg?react";
+import IconPlay from "./Play.svg?react";
+
 
 export {
     IconAttention,
@@ -46,8 +52,11 @@ export {
     IconSettings,
     IconQuestion,
     IconUser,
+    IconUserRounded,
     IconSearch,
     IconSort,
     IconClose,
     IconHome,
+    IconClear,
+    IconPlay,
 };

@@ -7,7 +7,7 @@ import { RadioButtonColor } from "src/ui/components/RadioButton/RadioButton.type
 
 interface RadioButtonProps {
     value: string;
-    title: string;
+    title?: string;
     subtitle?: string;
     disabled?: boolean;
     color?: RadioButtonColor;
@@ -44,7 +44,7 @@ export const RadioButton = (props: RadioButtonProps) => {
         <button className={radioButtonClassName} onClick={handleClick} disabled={disabled}>
             {getIcon()}
             <div>
-                <div className={styles.title}>{title}</div>
+                {title && <div className={styles.title}>{title}</div>}
                 {subtitle && <div className={styles.subtitle}>{subtitle}</div>}
             </div>
         </button>

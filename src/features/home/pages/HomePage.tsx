@@ -4,7 +4,7 @@ import { AdminPageLayout } from "src/features/layout/components/AdminPageLayout/
 export const HomePage = observer(() => {
     return (
         <AdminPageLayout title={"Главная"}>
-            <div></div>
+            <div>123</div>
         </AdminPageLayout>
     );
 });

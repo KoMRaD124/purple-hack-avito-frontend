@@ -14,8 +14,8 @@ export const LoginPage = () => {
     const [blockTimeCount, setblockTimeCount] = useState();
     const [blockButton, setBlockbutton] = useState(false);
     const [error, setError] = useState(false);
-    const [user, setUser] = useState({});
-
+/*     const [user, setUser] = useState({});
+ */
     const navigate = useNavigate();
 
     function getMinutesWord(minutes: number) {
@@ -68,8 +68,8 @@ export const LoginPage = () => {
                 setError(false);
                 setShowAlert(false);
 
-                setUser(response.data);
-                setErrorCount(6);
+/*                 setUser(response.data);
+ */                setErrorCount(6);
 
                 store.user.setUser(response.data);
                 navigate("/");
@@ -86,9 +86,9 @@ export const LoginPage = () => {
             });
     };
 
-    console.log(data);
+   /*  console.log(data);
     console.log(user);
-    console.log(alertText());
+    console.log(alertText()); */
 
     return (
         <div className={styles.body}>

@@ -8,7 +8,7 @@ import { InputSize, InputType } from "src/ui/components/Input/Input.types.ts";
 interface InputProps {
     placeholder: string;
     onChange: (event: ChangeEvent<HTMLInputElement>) => void;
-    types: InputType;
+    types?: InputType;
     size?: InputSize;
     startIcon?: ReactNode;
     endIcon?: ReactNode;

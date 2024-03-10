@@ -2,7 +2,7 @@ import styles from "./Avatar.module.scss";
 import { DropdownListOptions } from "src/ui/components/DropdownList/DropdownList.types.ts";
 import { DropdownList } from "src/ui/components/DropdownList/DropdownList.tsx";
 import { clsx } from "clsx";
-import { IconUser } from "src/ui/assets/icons";
+import { IconUserRounded } from "src/ui/assets/icons";
 
 interface AvatarProps {
     userName?: string;
@@ -24,7 +24,7 @@ export const Avatar = (props: AvatarProps) => {
             {photoUrl ? (
                 <img src={photoUrl} alt={"Аватар"} />
             ) : (
-                initials ?? <IconUser className={styles.icon} />
+                initials ?? <IconUserRounded className={styles.icon} />
             )}
         </button>
     );

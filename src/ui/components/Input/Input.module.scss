@@ -132,16 +132,16 @@
         letter-spacing: 0.32px;
 
         &:hover {
-            color: #070707;
+            color: color-mix(in oklab, #070707, #ffffff 40%);
         }
     }
 
     &.focus {
         color: #070707;
 
-        &::placeholder {
-            color: #070707;
-        }
+        /* &::placeholder {
+           color: color-mix(in oklab, #070707, #ffffff 40%);
+        } */
     }
 
     &.disabled {
@@ -197,13 +197,13 @@
 }
 
 .formText {
-    color: var(--color-components-text-neutral,);
+    color: var(--color-components-text-neutral, );
 
     font-family: Manrope;
-    font-size: 12px;
+    font-size: 14px;
     font-style: normal;
-    font-weight: 500;
-    line-height: 130%;
+    font-weight: 400;
+    line-height: normal;
     padding-top: 8px;
 
     &.error {
