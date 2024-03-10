@@ -5,7 +5,7 @@ import { clsx } from "clsx";
 
 interface CheckboxProps {
     onChange: (checked: boolean) => void;
-    title: string;
+    title?: string;
     subtitle?: string;
     checked?: boolean;
     intermediate?: boolean;

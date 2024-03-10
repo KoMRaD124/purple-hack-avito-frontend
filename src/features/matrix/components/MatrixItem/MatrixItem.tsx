@@ -1,15 +1,16 @@
 import { Checkbox } from 'src/ui/components/Checkbox/Checkbox'
 import styles from './styles.module.scss'
-import { RadioButton } from 'src/ui/components/RadioButton/RadioButton'
-import { Button } from 'src/ui/components/Button/Button'
+/* import { RadioButton } from 'src/ui/components/RadioButton/RadioButton'
+ */import { Button } from 'src/ui/components/Button/Button'
+import { useState } from 'react'
 
 
 
 interface MatrixItemProps {
     id: number
     name: string
-    type: "BASELINE" | "DISCOUNT"
-    status: "DRAFT" | "INACTIVE" | 'ACTIVE'
+    type: /* "BASELINE" | "DISCOUNT" */string
+    status: /* "DRAFT" | "INACTIVE" | 'ACTIVE' */string
     priceCount: number | null
     segmentId?: number | null
     date: string
@@ -34,6 +35,7 @@ export const MatrixItem = ({ name, type, status, priceCount, segmentId, id, date
 
         return formattedDate;
     }
+    console.log(id)
     function formatText(inputText: string) {
         if (!inputText) {
             return '';
@@ -44,9 +46,10 @@ export const MatrixItem = ({ name, type, status, priceCount, segmentId, id, date
 
         return firstChar + restOfText;
     }
+    const [value, setValue]=useState(false)
     return (
-        <div className={styles.container}>
-            <div className={styles.button}>{/* type === "BASELINE" ? */ <Checkbox checked={true} /> /* : <RadioButton value={true}  */}</div>
+        <div className={styles.container} onClick={()=>setValue(!value)}>
+            <div className={styles.button}>{/* type === "BASELINE" ? */ <Checkbox onChange={setValue} checked={value} /> /* : <RadioButton value={true}  */}</div>
             <div className={styles.block}>
                 <div className={styles.name}>{name}</div>
                 <div className={styles.type}>{formatText(type)}</div>
