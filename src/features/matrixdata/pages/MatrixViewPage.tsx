@@ -5,6 +5,7 @@ import { store } from "src/app/stores/AppStore.ts";
 import { useEffect } from "react";
 import { Button } from "src/ui/components/Button/Button.tsx";
 import { MatrixData } from "src/features/matrixdata/components/MatrixData/MatrixData.tsx";
+import { ICategory } from "src/features/matrixdata/stores/MatrixDataStore.tsx";
 
 export const MatrixViewPage = observer(() => {
     const params = useParams<{ id: string }>();
@@ -13,6 +14,12 @@ export const MatrixViewPage = observer(() => {
     useEffect(() => {
         if (!store.matrix.allMatrix.length) {
             store.matrix.getMatrix();
+        }
+        if (!store.matrix.category.length) {
+            store.matrix.getCategory();
+        }
+        if (!store.matrix.location.length) {
+            store.matrix.getLocation();
         }
     }, []);
 

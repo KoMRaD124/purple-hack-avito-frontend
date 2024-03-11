@@ -124,12 +124,6 @@
 
     &::placeholder {
         color: color-mix(in oklab, #070707, #ffffff 40%);
-        font-family: Manrope;
-        font-size: 16px;
-        font-style: normal;
-        font-weight: 600;
-        line-height: normal;
-        letter-spacing: 0.32px;
 
         &:hover {
             color: color-mix(in oklab, #070707, #ffffff 40%);

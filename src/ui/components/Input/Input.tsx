@@ -71,7 +71,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
             {formName && (
                 <div className={clsx(styles.formName, { [styles.error]: error })}>{formName}</div>
             )}
-            <div className={inputClassName} style={{ ...style }}>
+            <div className={inputClassName} style={{ ...style }} ref={ref}>
                 <div
                     className={clsx(styles.inputBorder, {
                         [styles.active]: isInputFocused,
@@ -91,7 +91,6 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
                     )}
 
                     <input
-                        ref={ref}
                         type={types}
                         value={value}
                         className={clsx(styles.input, styles[size], {

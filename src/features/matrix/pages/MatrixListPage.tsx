@@ -213,7 +213,7 @@ export const MatrixListPage = observer(() => {
                     <RadioGroup value={currentBaselineId} onChange={setCurrentBaselineId}>
                         {matrixArray.length > 0 ? matrixArray : <div className={styles.nf}>Ничего не найдено!</div>}</RadioGroup>
                 </div>
-                <Modal open={open} onClose={handleClose}><CreateMatrix /></Modal>
+                <Modal open={open}><CreateMatrix /></Modal>
 
             </div>
 
