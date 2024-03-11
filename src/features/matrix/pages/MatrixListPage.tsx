@@ -11,10 +11,12 @@ import { MatrixItem } from "../components/MatrixItem/MatrixItem";
 /* import axios from "axios";
  */import Modal from '@mui/material/Modal';
 /* import { GET_ALL_MATRIX } from "src/shared/api/endpoints";
- */import { Box, Typography } from "@mui/material";
+ *//* import { Box, Typography } from "@mui/material"; */
 import { store } from "src/app/stores/AppStore";
 import { CreateMatrix } from "../components/CreateMatrix/CreateMatrix";
 import { RadioGroup } from "src/ui/components/RadioGroup/RadioGroup";
+import axios from "axios";
+import { POST_NEW_SET } from "src/shared/api/endpoints";
 
 export interface MatrixData {
     segmentId: number | null;
@@ -32,7 +34,7 @@ export const MatrixListPage = observer(() => {
         setSearchValue(event.target.value);
     };
     const [activeButton, setActiveButton] = useState<string>("active")
-    const [sortButton, setSortButton] = useState<string>("date")
+    const [sortButton, setSortButton] = useState<string>("type")
     const [sortTypeButton, setSortTypeButton] = useState(false)
     const [currentBaselineId, setCurrentBaselineId] = useState("")
 
@@ -90,6 +92,15 @@ export const MatrixListPage = observer(() => {
             : aValue > bValue ? 1 : aValue < bValue ? -1 : 0;
     });
     console.log(currentBaselineId)
+    const handleCheckboxChange = (itemId: number) => {
+        const isSelected = selectedCheckboxes.includes(itemId);
+
+        if (isSelected) {
+            setSelectedCheckboxes(selectedCheckboxes.filter(id => id !== itemId));
+        } else {
+            setSelectedCheckboxes([...selectedCheckboxes, itemId]);
+        }
+    }
 
     const matrixArray = sortedResults.map((item) => {
         return <MatrixItem
@@ -102,19 +113,27 @@ export const MatrixListPage = observer(() => {
             type={item.type}
             status={item.status}
             onChangeRadio={() => setCurrentBaselineId(item.id)}
+            handleCheckboxChange={() => handleCheckboxChange(item.id)}
         />;
     });
+    const [selectedCheckboxes, setSelectedCheckboxes] = useState<number[]>([]);
+    console.log(selectedCheckboxes)
+
     const data = {
         baselineMatrixId: currentBaselineId,
-        discountMatrixIds: []
+        discountMatrixIds: selectedCheckboxes
     }
-    const [open, setOpen]=useState(false)
+    const [open, setOpen] = useState(false)
+
     const handleOpen = () => {
         setOpen(true);
-      };
-      const handleClose = () => {
+    };
+    const handleClose = () => {
         setOpen(false);
-      };
+    };
+    const postNewSet = () => {
+        axios.post(POST_NEW_SET, data)
+    }
     return (
         <AdminPageLayout title={"Ценовые матрицы"}>
             <div className={styles.container}>
@@ -134,10 +153,11 @@ export const MatrixListPage = observer(() => {
                             } />
                     </div>
                     <div className={styles.buttonAddContainer}>
-                        <Button size="large">Применить изменения</Button>
+                        <Button disabled={selectedCheckboxes.length === 0} size="large">Применить изменения</Button>
                         <Popover
-                            header={"ХедерХедерХедер"}
-                            text={"ХедерХедерХедерХедер ХедерХедер Хедер ХедерХедер Хедер ХедерХедер Хедер"}
+                            maxWidth={224}
+                            header={"Работа с матрицами"}
+                            text={`Активные матрицы имеют соответствующий статус. Для того чтобы изменить его, необходимо убрать выделение с нужных матриц и применить изменения. Матрица изменит статус на «Неактивно». Для изменения матриц со статусами «Неактивно» и «Черновик» необходимо выбрать нужные и применить изменения. Если не применить изменения, то выбранные матрицы не поменяют свой статус.`}
                             color='neutral'
                             arrowAlign='end'
                         >
@@ -162,7 +182,7 @@ export const MatrixListPage = observer(() => {
                     <div className={styles.createButton}> <Button onClick={handleOpen} startIcon={<IconPlus />} type="secondary">Создать новую матрицу</Button></div>
                 </div>
                 <div className={styles.matrixSort}>
-                    <div className={styles.sortIcon}><IconEdit width={18} /></div>
+                    <div className={styles.sortIcon}><IconEdit width={18} height={18} /></div>
                     <div className={styles.sortName}>Название</div>
 
                     <div className={styles.sortType}>

@@ -17,6 +17,7 @@ interface MatrixItemProps {
     segmentId?: number | null
     date: string
     onChangeRadio?: (id) => void
+    handleCheckboxChange?: (id: any) => void
 }
 const checkStatus = (stat: string) => {
     if (stat === "DRAFT") return "Черновик"
@@ -26,7 +27,7 @@ const checkStatus = (stat: string) => {
 
 
 }
-export const MatrixItem = ({ name, type, status, priceCount, segmentId, id, date, onChangeRadio }: MatrixItemProps) => {
+export const MatrixItem = ({ name, type, status, priceCount, segmentId, id, date, onChangeRadio, handleCheckboxChange }: MatrixItemProps) => {
     function formatDate(inputDate: string) {
         const dateObject = new Date(inputDate);
         const formattedDate = dateObject.toLocaleDateString()
@@ -45,18 +46,24 @@ export const MatrixItem = ({ name, type, status, priceCount, segmentId, id, date
     const onClickButton = () => {
         setValue(!value)
         if (type === "BASELINE") { onChangeRadio(id) }
+        if (type === "DISCOUNT") { handleCheckboxChange(id) }
 
 
     }
-    useEffect(()=>{
-        if(status === "ACTIVE"){
-            setValue(true)
-        }
-    },[])
     const [value, setValue] = useState(false)
+    useEffect(() => {
+        if (status === "ACTIVE") {
+            setValue(true)
+
+        }
+        if (status === "ACTIVE" && value) {
+            handleCheckboxChange(id)
+        }
+    }, [])
+
     return (
         <div className={styles.container} >
-            <div className={styles.button} onClick={() => onClickButton()}>{type === "BASELINE" ? <RadioButton color={status === "ACTIVE" ? 'positive' : 'neutral'} value={id} /> : <Checkbox onChange={setValue} checked={value} color={status === "ACTIVE" ? 'positive' : 'neutral'}/>}</div>
+            <div className={styles.button} onClick={() => onClickButton()}>{type === "BASELINE" ? <RadioButton color={status === "ACTIVE" ? 'positive' : 'neutral'} value={id} /> : <Checkbox onChange={setValue} checked={value} color={status === "ACTIVE" ? 'positive' : 'neutral'} />}</div>
             <div className={styles.block}>
                 <div className={styles.name}>{name}</div>
                 <div className={styles.type}>{formatText(type)}</div>
