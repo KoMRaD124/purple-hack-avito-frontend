@@ -4,7 +4,7 @@ import { clsx } from "clsx";
 
 export interface CardProps {
     children: ReactNode;
-    title?: string;
+    title?: ReactNode;
     helpIcon?: ReactNode;
 }
 

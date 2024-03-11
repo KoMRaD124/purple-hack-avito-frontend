@@ -7,6 +7,10 @@
     font-weight: 600;
     white-space: nowrap;
 
+    &:not(&.clickable) {
+        pointer-events: none;
+    }
+
     &.fullWidth {
         width: 100%;
     }

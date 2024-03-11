@@ -4,6 +4,7 @@ import styles from './styles.module.scss'
  */import { Button } from 'src/ui/components/Button/Button'
 import { useEffect, useState } from 'react'
 import { RadioButton } from 'src/ui/components/RadioButton/RadioButton'
+import { useNavigate } from "react-router-dom";
 /* import { IconCheckmark } from 'src/ui/assets/icons'
  */
 
@@ -28,6 +29,8 @@ const checkStatus = (stat: string) => {
 
 }
 export const MatrixItem = ({ name, type, status, priceCount, segmentId, id, date, onChangeRadio, handleCheckboxChange }: MatrixItemProps) => {
+    const navigate = useNavigate();
+
     function formatDate(inputDate: string) {
         const dateObject = new Date(inputDate);
         const formattedDate = dateObject.toLocaleDateString()
@@ -72,7 +75,7 @@ export const MatrixItem = ({ name, type, status, priceCount, segmentId, id, date
     return (
         <div className={styles.container} >
             <div className={styles.button} onClick={() => onClickButton()}>{type === "BASELINE" ? <RadioButton color={status === "ACTIVE" ? 'positive' : 'neutral'} value={id} /> : <Checkbox onChange={setValue} checked={value} color={status === "ACTIVE" ? 'positive' : 'neutral'} />}</div>
-            <div className={styles.block}>
+            <div className={styles.block} onClick={() => navigate(`/matrix/${id}/view`)}>
                 <div className={styles.name}>{name}</div>
                 <div className={styles.type}>{formatText(type)}</div>
                 <div className={styles.date}>{formatDate(date)}</div>
