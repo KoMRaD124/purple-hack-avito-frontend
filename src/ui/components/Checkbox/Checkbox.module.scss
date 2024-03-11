@@ -58,6 +58,13 @@
             $color-components-text-neutral-secondary
         );
     }
+    &.positive {
+        @include color-mode-vars(
+            $color-components-icon-positive,
+            $color-components-text-positive,
+            $color-components-text-neutral-secondary
+        );
+    }
 
     @include color-state-vars("pale");
 

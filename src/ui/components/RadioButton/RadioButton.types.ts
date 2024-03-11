@@ -1,1 +1,1 @@
-export type RadioButtonColor = "accent" | "neutral";
+export type RadioButtonColor = "accent" | "neutral" | "positive";

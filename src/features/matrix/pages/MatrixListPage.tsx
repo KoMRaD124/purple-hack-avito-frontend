@@ -3,15 +3,20 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { AdminPageLayout } from "src/features/layout/components/AdminPageLayout/AdminPageLayout.tsx";
 import styles from "./styles.module.scss"
 import { Input } from "src/ui/components/Input/Input";
-import { IconClear, IconPlay, IconPlus, IconQuestion, IconSearch, IconSort } from "src/ui/assets/icons";
+import { IconClear, IconEdit, IconPlay, IconPlus, IconQuestion, IconSearch, IconSort } from "src/ui/assets/icons";
 import { ButtonIcon } from "src/ui/components/ButtonIcon/ButtonIcon";
 import { Button } from "src/ui/components/Button/Button";
 import { Popover } from "src/ui/components/Popover/Popover";
 import { MatrixItem } from "../components/MatrixItem/MatrixItem";
-import axios from "axios";
-import { GET_ALL_MATRIX } from "src/shared/api/endpoints";
+/* import axios from "axios";
+ */import Modal from '@mui/material/Modal';
+/* import { GET_ALL_MATRIX } from "src/shared/api/endpoints";
+ */import { Box, Typography } from "@mui/material";
+import { store } from "src/app/stores/AppStore";
+import { CreateMatrix } from "../components/CreateMatrix/CreateMatrix";
+import { RadioGroup } from "src/ui/components/RadioGroup/RadioGroup";
 
-interface MatrixData {
+export interface MatrixData {
     segmentId: number | null;
     createDate: string;
     priceCount: number | null;
@@ -26,9 +31,10 @@ export const MatrixListPage = observer(() => {
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
         setSearchValue(event.target.value);
     };
-    const [activeButton, setActiveButton] = useState<string>("all")
+    const [activeButton, setActiveButton] = useState<string>("active")
     const [sortButton, setSortButton] = useState<string>("date")
     const [sortTypeButton, setSortTypeButton] = useState(false)
+    const [currentBaselineId, setCurrentBaselineId] = useState("")
 
     const OnClickTypeButton = (type: string) => {
 
@@ -40,24 +46,21 @@ export const MatrixListPage = observer(() => {
             setSortTypeButton(false)
         }
     }
-    console.log((sortTypeButton && sortButton === "type"))
-    const [data, setDate] = useState<MatrixData[]>([])
-    useEffect(() => {
-        axios
-            .get(GET_ALL_MATRIX)
-            .then((response) => {
-                console.log(response.data)
-                setDate(response.data);
+    const currentActiveBaseline = store.matrix.allMatrix.filter((item: any) => item.type === 'BASELINE' && item.status === 'ACTIVE');
+    const currentActiveBaselineId = currentActiveBaseline[0]?.id
 
-            })
-            .catch((error: string) => {
-                console.log(error)
-            });
-    }, [])
-    const filteredResults = data.filter((item) =>
+    useEffect(() => {
+        store.matrix.getMatrix()
+        store.matrix.getCategory()
+        store.matrix.getLocation()
+        store.matrix.getSegment()
+        setCurrentBaselineId(currentActiveBaselineId)
+
+    }, [currentActiveBaselineId])
+    const filteredResults = store.matrix.allMatrix.filter((item: any) =>
         item.name.toLowerCase().includes(searchValue.toLowerCase())
     );
-    const filteredSecontTimeResults = filteredResults.filter((item) => {
+    const filteredSecontTimeResults = filteredResults.filter((item: any) => {
         switch (activeButton) {
             case "active":
                 return item.status === "ACTIVE";
@@ -74,19 +77,19 @@ export const MatrixListPage = observer(() => {
     });
     const sortedResults = filteredSecontTimeResults.sort((a, b) => {
         const sortProperty = sortButton as keyof MatrixData;
-        
-        // Уточняем типы явно(люблю это делать шо ппц)
+
         const aValue: string | number | null = a[sortProperty];
         const bValue: string | number | null = b[sortProperty];
-    
+
         if (aValue === null || bValue === null) {
-            return 0; // или другое значение, в зависимост
+            return 0;
         }
-    
+
         return sortTypeButton
             ? bValue > aValue ? 1 : bValue < aValue ? -1 : 0
             : aValue > bValue ? 1 : aValue < bValue ? -1 : 0;
     });
+    console.log(currentBaselineId)
 
     const matrixArray = sortedResults.map((item) => {
         return <MatrixItem
@@ -98,9 +101,20 @@ export const MatrixListPage = observer(() => {
             name={item.name}
             type={item.type}
             status={item.status}
+            onChangeRadio={() => setCurrentBaselineId(item.id)}
         />;
     });
-
+    const data = {
+        baselineMatrixId: currentBaselineId,
+        discountMatrixIds: []
+    }
+    const [open, setOpen]=useState(false)
+    const handleOpen = () => {
+        setOpen(true);
+      };
+      const handleClose = () => {
+        setOpen(false);
+      };
     return (
         <AdminPageLayout title={"Ценовые матрицы"}>
             <div className={styles.container}>
@@ -123,16 +137,16 @@ export const MatrixListPage = observer(() => {
                         <Button size="large">Применить изменения</Button>
                         <Popover
                             header={"ХедерХедерХедер"}
-                            text={"ХедерХедерХедерХедерХедер"}
+                            text={"ХедерХедерХедерХедер ХедерХедер Хедер ХедерХедер Хедер ХедерХедер Хедер"}
                             color='neutral'
                             arrowAlign='end'
                         >
 
                             <ButtonIcon type="tertiary"
-                                color="neutral">
+                                color="neutral"
+                                size="large">
                                 <IconQuestion />
                             </ButtonIcon>
-
                         </Popover>
                     </div>
                 </div>
@@ -145,9 +159,10 @@ export const MatrixListPage = observer(() => {
                         <Button onClick={() => setActiveButton("baseline")} type={activeButton === "baseline" ? 'primary' : "tertiary"} color="neutral">Baseline</Button>
                         <Button onClick={() => setActiveButton("discount")} type={activeButton === "discount" ? 'primary' : "tertiary"} color="neutral">Discount</Button>
                     </div>
-                    <div className={styles.createButton}> <Button startIcon={<IconPlus />} type="secondary">Создать новую матрицу</Button></div>
+                    <div className={styles.createButton}> <Button onClick={handleOpen} startIcon={<IconPlus />} type="secondary">Создать новую матрицу</Button></div>
                 </div>
                 <div className={styles.matrixSort}>
+                    <div className={styles.sortIcon}><IconEdit width={18} /></div>
                     <div className={styles.sortName}>Название</div>
 
                     <div className={styles.sortType}>
@@ -177,12 +192,13 @@ export const MatrixListPage = observer(() => {
                         Сегмент</div>
                 </div>
                 <div className={styles.matrixList}>
-
-                    {matrixArray.length > 0 ? matrixArray : <div className={styles.nf}>Ничего не найдено!</div>}
-
-
+                    <RadioGroup value={currentBaselineId} onChange={setCurrentBaselineId}>
+                        {matrixArray.length > 0 ? matrixArray : <div className={styles.nf}>Ничего не найдено!</div>}</RadioGroup>
                 </div>
+                <Modal open={open} onClose={handleClose}><CreateMatrix /></Modal>
+
             </div>
+
         </AdminPageLayout >
     );
 });

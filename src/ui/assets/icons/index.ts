@@ -28,6 +28,8 @@ import IconClear from "./Clear.svg?react";
 
 import IconHome from "./Home.svg?react";
 import IconPlay from "./Play.svg?react";
+import IconArrowDown from "./Arrow-down.svg?react";
+
 
 
 export {
@@ -59,4 +61,5 @@ export {
     IconHome,
     IconClear,
     IconPlay,
+    IconArrowDown,
 };

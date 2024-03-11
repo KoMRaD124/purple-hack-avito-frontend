@@ -10,7 +10,7 @@ interface CheckboxProps {
     checked?: boolean;
     intermediate?: boolean;
     disabled?: boolean;
-    color?: "neutral" | "accent";
+    color?: "neutral" | "accent" | "positive";
 }
 
 export const Checkbox = (props: CheckboxProps) => {

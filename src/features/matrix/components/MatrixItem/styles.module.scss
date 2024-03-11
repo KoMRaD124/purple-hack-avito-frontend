@@ -14,7 +14,7 @@
 }
 
 .button {
-     padding-left: 32px;
+    padding-left: 32px;
     padding-right: 19px;
     border-right: 1px solid var(--color-components-stroke-neutral-pale, #E6E6E6);
     ;
@@ -23,8 +23,16 @@
     align-items: center;
     cursor: pointer;
 
+    &:nth-last-child(1) {
+
+        background-color: red;
+
+    }
+
+
     &:hover {
         background-color: #F7F9FF;
+
 
     }
 }
@@ -74,7 +82,7 @@
 .status {
     /*     background-color: red;
  */
-    margin-left: 85px;
+    margin-left: 73px;
     width: 92px;
     color: var(--color-components-text-neutral, #070707);
     /* Desktop/Button/M */
@@ -86,7 +94,7 @@
 }
 
 .priceCount {
-    margin-left: 45px;
+    margin-left: 62px;
 
     color: var(--color-components-text-neutral-secondary, #202020);
     /* Числовые значения в таблице */
@@ -99,7 +107,7 @@
 }
 
 .segmentId {
-    margin-left: 60px;
+    margin-left: 43px;
     overflow: hidden;
     color: var(--color-components-text-neutral-secondary, #202020);
     text-overflow: ellipsis;
@@ -118,6 +126,7 @@
     align-items: center;
     height: 71px;
     cursor: pointer;
+
     &:nth-last-child(1) {
         border-bottom-right-radius: 12px;
 

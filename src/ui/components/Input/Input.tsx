@@ -1,6 +1,5 @@
 import styles from "./Input.module.scss";
-import { ChangeEvent, useEffect } from "react";
-
+import { ChangeEvent, forwardRef, useEffect } from "react";
 import { clsx } from "clsx";
 import { CSSProperties, ReactNode, useState } from "react";
 import { InputSize, InputType } from "src/ui/components/Input/Input.types.ts";
@@ -25,24 +24,26 @@ interface InputProps {
     disabled?: boolean;
 }
 
-export const Input = ({
-    placeholder,
-    onChange,
-    size = "medium",
-    startIcon,
-    endIcon,
-    className,
-    formName = "",
-    value,
-    types = "text",
-    error = false,
-    formText = "",
-    isFocused: propIsFocused,
-    onFocus: propOnFocus,
-    onBlur: propOnBlur,
-    disabled,
-    style,
-}: InputProps) => {
+export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
+    const {
+        placeholder,
+        onChange,
+        size = "medium",
+        startIcon,
+        endIcon,
+        className,
+        formName = "",
+        value,
+        types = "text",
+        error = false,
+        formText = "",
+        isFocused: propIsFocused,
+        onFocus: propOnFocus,
+        onBlur: propOnBlur,
+        disabled,
+        style,
+    }: InputProps = props;
+
     const inputClassName = clsx(
         styles.inputContainer,
         styles[size],
@@ -51,16 +52,6 @@ export const Input = ({
     );
     const [isInputFocused, setIsInputFocused] = useState(false);
 
-    /* const renderIcon = (icon?: ReactNode) => {
-        if (isValidElement<SVGElement>(icon)) {
-            return cloneElement(icon, {
-                className: clsx(styles.icon, styles[size], {
-                    [styles.focus]: isInputFocused,
-                    [styles.disabled]: disabled,
-                }),
-            });
-        }
-    }; */
     const handleInputFocus = (): void => {
         setIsInputFocused(true);
         propOnFocus && propOnFocus();
@@ -74,6 +65,7 @@ export const Input = ({
             setIsInputFocused(propIsFocused);
         }
     }, [propIsFocused]);
+
     return (
         <div>
             {formName && (
@@ -99,6 +91,7 @@ export const Input = ({
                     )}
 
                     <input
+                        ref={ref}
                         type={types}
                         value={value}
                         className={clsx(styles.input, styles[size], {
@@ -123,4 +116,5 @@ export const Input = ({
             )}
         </div>
     );
-};
+});
+Input.displayName = 'Input'

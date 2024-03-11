@@ -2,18 +2,21 @@ import { Checkbox } from 'src/ui/components/Checkbox/Checkbox'
 import styles from './styles.module.scss'
 /* import { RadioButton } from 'src/ui/components/RadioButton/RadioButton'
  */import { Button } from 'src/ui/components/Button/Button'
-import { useState } from 'react'
-
+import { useEffect, useState } from 'react'
+import { RadioButton } from 'src/ui/components/RadioButton/RadioButton'
+/* import { IconCheckmark } from 'src/ui/assets/icons'
+ */
 
 
 interface MatrixItemProps {
     id: number
     name: string
-    type: /* "BASELINE" | "DISCOUNT" */string
+    type: "BASELINE" | "DISCOUNT"
     status: /* "DRAFT" | "INACTIVE" | 'ACTIVE' */string
     priceCount: number | null
     segmentId?: number | null
     date: string
+    onChangeRadio?: (id) => void
 }
 const checkStatus = (stat: string) => {
     if (stat === "DRAFT") return "Черновик"
@@ -23,19 +26,12 @@ const checkStatus = (stat: string) => {
 
 
 }
-export const MatrixItem = ({ name, type, status, priceCount, segmentId, id, date }: MatrixItemProps) => {
+export const MatrixItem = ({ name, type, status, priceCount, segmentId, id, date, onChangeRadio }: MatrixItemProps) => {
     function formatDate(inputDate: string) {
         const dateObject = new Date(inputDate);
-
-        const day = dateObject.getDate();
-        const month = dateObject.getMonth() + 1; // Месяцы начинаются с 0
-        const year = dateObject.getFullYear();
-
-        const formattedDate = `${day}.${month < 10 ? '0' : ''}${month}.${year}`;
-
+        const formattedDate = dateObject.toLocaleDateString()
         return formattedDate;
     }
-    console.log(id)
     function formatText(inputText: string) {
         if (!inputText) {
             return '';
@@ -46,10 +42,21 @@ export const MatrixItem = ({ name, type, status, priceCount, segmentId, id, date
 
         return firstChar + restOfText;
     }
-    const [value, setValue]=useState(false)
+    const onClickButton = () => {
+        setValue(!value)
+        if (type === "BASELINE") { onChangeRadio(id) }
+
+
+    }
+    useEffect(()=>{
+        if(status === "ACTIVE"){
+            setValue(true)
+        }
+    },[])
+    const [value, setValue] = useState(false)
     return (
-        <div className={styles.container} onClick={()=>setValue(!value)}>
-            <div className={styles.button}>{/* type === "BASELINE" ? */ <Checkbox onChange={setValue} checked={value} /> /* : <RadioButton value={true}  */}</div>
+        <div className={styles.container} >
+            <div className={styles.button} onClick={() => onClickButton()}>{type === "BASELINE" ? <RadioButton color={status === "ACTIVE" ? 'positive' : 'neutral'} value={id} /> : <Checkbox onChange={setValue} checked={value} color={status === "ACTIVE" ? 'positive' : 'neutral'}/>}</div>
             <div className={styles.block}>
                 <div className={styles.name}>{name}</div>
                 <div className={styles.type}>{formatText(type)}</div>

@@ -6,7 +6,7 @@ import { RadioGroupContext } from "src/ui/components/RadioGroup/RadioGroupContex
 import { RadioButtonColor } from "src/ui/components/RadioButton/RadioButton.types.ts";
 
 interface RadioButtonProps {
-    value: string;
+    value: string ;
     title?: string;
     subtitle?: string;
     disabled?: boolean;

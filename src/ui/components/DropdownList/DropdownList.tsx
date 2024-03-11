@@ -73,6 +73,7 @@ export const DropdownList = (props: DropdownListProps) => {
 
     return (
         <PopoverBase
+            
             {...props}
             color={"contrast"}
             triggerEvent={"click"}
