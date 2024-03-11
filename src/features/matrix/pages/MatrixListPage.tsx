@@ -56,7 +56,7 @@ export const MatrixListPage = observer(() => {
         store.matrix.getCategory()
         store.matrix.getLocation()
         store.matrix.getSegment()
-        setCurrentBaselineId(currentActiveBaselineId)
+        setCurrentBaselineId(currentActiveBaselineId as any)
 
     }, [currentActiveBaselineId])
     const filteredResults = store.matrix.allMatrix.filter((item: any) =>
@@ -110,9 +110,9 @@ export const MatrixListPage = observer(() => {
             key={item.id + item.name}
             id={item.id}
             name={item.name}
-            type={item.type}
+            type={item.type as any}
             status={item.status}
-            onChangeRadio={() => setCurrentBaselineId(item.id)}
+            onChangeRadio={() => setCurrentBaselineId(item.id as any)}
             handleCheckboxChange={() => handleCheckboxChange(item.id)}
         />;
     });
@@ -131,9 +131,7 @@ export const MatrixListPage = observer(() => {
     const handleClose = () => {
         setOpen(false);
     };
-    const postNewSet = () => {
-        axios.post(POST_NEW_SET, data)
-    }
+
     return (
         <AdminPageLayout title={"Ценовые матрицы"}>
             <div className={styles.container}>

@@ -9,15 +9,15 @@ import { RadioButton } from 'src/ui/components/RadioButton/RadioButton'
 
 
 interface MatrixItemProps {
-    id: number
-    name: string
-    type: "BASELINE" | "DISCOUNT"
-    status: /* "DRAFT" | "INACTIVE" | 'ACTIVE' */string
-    priceCount: number | null
-    segmentId?: number | null
-    date: string
-    onChangeRadio?: (id) => void
-    handleCheckboxChange?: (id: any) => void
+    id: number;
+    name: string;
+    type: "BASELINE" | "DISCOUNT";
+    status: /* "DRAFT" | "INACTIVE" | 'ACTIVE' */ string;
+    priceCount: number | null;
+    segmentId?: number | null;
+    date: string;
+    onChangeRadio?: (id: any) => void;
+    handleCheckboxChange?: (id: any) => void;
 }
 const checkStatus = (stat: string) => {
     if (stat === "DRAFT") return "Черновик"
@@ -45,8 +45,14 @@ export const MatrixItem = ({ name, type, status, priceCount, segmentId, id, date
     }
     const onClickButton = () => {
         setValue(!value)
-        if (type === "BASELINE") { onChangeRadio(id) }
-        if (type === "DISCOUNT") { handleCheckboxChange(id) }
+        if (type === "BASELINE") {
+            if (onChangeRadio) {
+                onChangeRadio(id);
+            } }
+        if (type === "DISCOUNT") {
+            if (handleCheckboxChange) {
+                handleCheckboxChange(id);
+            } }
 
 
     }
@@ -57,7 +63,9 @@ export const MatrixItem = ({ name, type, status, priceCount, segmentId, id, date
 
         }
         if (status === "ACTIVE" && value) {
-            handleCheckboxChange(id)
+            if (handleCheckboxChange) {
+                handleCheckboxChange(id);
+            }
         }
     }, [])
 
