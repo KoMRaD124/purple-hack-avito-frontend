@@ -3,18 +3,22 @@ import { ReactNode } from "react";
 
 export interface HeaderProps {
     title: string;
+    titleChip?: ReactNode;
     notification?: ReactNode;
     avatar?: ReactNode;
     actions?: ReactNode[];
 }
 
 export const Header = (props: HeaderProps) => {
-    const { title, notification, avatar, actions }: HeaderProps = props;
+    const { title, notification, avatar, actions, titleChip }: HeaderProps = props;
 
     return (
         <div className={styles.header}>
             <div className={styles.titleRow}>
-                <div className={styles.title}>{title}</div>
+                <div className={styles.title}>
+                    {title}
+                    {titleChip}
+                </div>
                 <div className={styles.titleRowActions}>
                     {notification}
                     {avatar}

@@ -26,8 +26,10 @@ export interface PopoverBaseProps {
     arrowAlign?: PopoverArrowAlign;
     delay?: number;
     maxWidth?: number;
+    maxHeight?: number;
     show?: boolean;
     setShow?: (show: boolean) => void;
+    fullWidth?: boolean;
 }
 
 const POPOVER_MARGIN = 4;
@@ -44,6 +46,8 @@ export const PopoverBase = (props: PopoverBaseProps) => {
         arrowAlign,
         delay,
         maxWidth,
+        maxHeight,
+        fullWidth,
     }: PopoverBaseProps = props;
     const childrenRef = useRef<HTMLElement>(null);
     const popoverRef = useRef<HTMLDivElement>(null);
@@ -218,18 +222,23 @@ export const PopoverBase = (props: PopoverBaseProps) => {
             styles[arrowAlign],
         );
         const arrowClassName = clsx(styles.arrow, styles[arrowSide]);
+        const width = fullWidth && childrenRef.current?.clientWidth;
         return createPortal(
             <div
                 ref={popoverRef}
                 className={popoverClassName}
                 style={{
                     ...position,
+                    width: width ? `${width}px` : undefined,
                 }}
             >
                 <div className={arrowClassName} />
                 <div
                     className={clsx(styles.card, styles[color])}
-                    style={{ maxWidth: `${maxWidth}px` }}
+                    style={{
+                        maxWidth: maxWidth && `${maxWidth}px`,
+                        maxHeight: maxHeight && `${maxHeight}px`,
+                    }}
                 >
                     {content}
                 </div>
