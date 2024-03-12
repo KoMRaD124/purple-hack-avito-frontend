@@ -1,0 +1,90 @@
+.sortlist {
+    height: 72px;
+    display: flex;
+    align-items: center;
+
+    &:hover {
+        background-color: #F7F9FF;
+    }
+}
+
+.sortlistAction {
+    margin-left: 44px;
+    overflow: hidden;
+    color: var(--color-components-text-accent, #003EDE);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    font-family: Manrope;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    min-width: 137px;
+}
+
+.sortlistName {
+    margin-left: 44px;
+    overflow: hidden;
+    color: var(--color-components-text-neutral, #070707);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: Manrope;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    min-width: 219px;
+
+}
+
+.sortlistDate {
+    margin-left: 25px;
+    overflow: hidden;
+    color: var(--color-components-text-neutral, #070707);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    /* Числовые значения в таблице */
+    font-family: Manrope;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    min-width: 71px;
+}
+
+.sortlistTime {
+    margin-left: 30px;
+    overflow: hidden;
+    color: var(--color-components-text-neutral, #070707);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    /* Числовые значения в таблице */
+    font-family: Manrope;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    min-width: 71px;
+}
+
+.sortlistStatus {
+    margin-left: 12px;
+}
+
+.sortlistAuthor {
+    padding-left: 33px;
+    overflow: hidden;
+    color: var(--color-components-text-neutral, #070707);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    /* Название матрицы или тип */
+    font-family: Manrope;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin-right: 32px;
+}

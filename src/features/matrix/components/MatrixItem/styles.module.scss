@@ -37,9 +37,23 @@
     }
 }
 
-.name {
-    width: 205px;
+.id {
     margin-left: 20px;
+    min-width: 23px;
+    color: var(--color-components-text-neutral-tertiary, #9C9C9C);
+
+    white-space: nowrap;
+    /* Название матрицы или тип */
+    font-family: Manrope;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.name {
+    width: 171px;
+    margin-left: 15px;
     overflow: hidden;
     color: var(--color-components-text-neutral, #070707);
     text-overflow: ellipsis;

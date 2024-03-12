@@ -51,11 +51,13 @@ export const MatrixItem = ({ name, type, status, priceCount, segmentId, id, date
         if (type === "BASELINE") {
             if (onChangeRadio) {
                 onChangeRadio(id);
-            } }
+            }
+        }
         if (type === "DISCOUNT") {
             if (handleCheckboxChange) {
                 handleCheckboxChange(id);
-            } }
+            }
+        }
 
 
     }
@@ -65,19 +67,14 @@ export const MatrixItem = ({ name, type, status, priceCount, segmentId, id, date
             setValue(true)
 
         }
-      /*   if (status === "ACTIVE" && type === "DISCOUNT") {
-            if (handleCheckboxChange) {
-                console.log(id)
-                handleCheckboxChange(id);
-                
-            }
-        } */
+
     }, [])
 
     return (
         <div className={styles.container} >
             <div className={styles.button} onClick={() => onClickButton()}>{type === "BASELINE" ? <RadioButton color={status === "ACTIVE" ? 'positive' : 'neutral'} value={id} /> : <Checkbox onChange={setValue} checked={value} color={status === "ACTIVE" ? 'positive' : 'neutral'} />}</div>
             <div className={styles.block} onClick={() => navigate(`/matrix/${id}/view`)}>
+                <div className={styles.id}>{id}</div>
                 <div className={styles.name}>{name}</div>
                 <div className={styles.type}>{formatText(type)}</div>
                 <div className={styles.date}>{formatDate(date)}</div>
