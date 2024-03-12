@@ -20,7 +20,7 @@ interface DropdownListProps extends Pick<PopoverBaseProps, "arrowSide" | "arrowA
 }
 
 export const DropdownList = (props: DropdownListProps) => {
-    const { children, options, onChange, color = "accent", }: DropdownListProps = props;
+    const { children, options, onChange, color = "accent", fullWidth }: DropdownListProps = props;
     const [show, setShow] = useState(false);
     const [value, setValue] = useState<DropdownListOptionValue>(props.value ?? null);
 
@@ -56,7 +56,7 @@ export const DropdownList = (props: DropdownListProps) => {
             </Fragment>
         );
     };
-
+    
     const renderOption = (option: DropdownListOption, index: number) => {
         return (
             <Button
@@ -81,6 +81,7 @@ export const DropdownList = (props: DropdownListProps) => {
             show={show}
             setShow={setShow}
             maxHeight={300}
+            fullWidth={fullWidth}
         >
             {children}
         </PopoverBase>

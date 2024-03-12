@@ -56,6 +56,9 @@ export class MatrixStore {
     setMatrix(matrix: MatrixData[]) {
         this.allMatrix = matrix;
     }
+    pushMatrix(matrix:MatrixData){
+        this.allMatrix.push(matrix)
+    }
     setActiveMatrixId() {
         const currentActiveDiscount = this.allMatrix.filter((item: any) => item.type === 'DISCOUNT' && item.status === 'ACTIVE');
         for (let i = 0; i < currentActiveDiscount.length; i++) {
