@@ -7,12 +7,13 @@ import { store } from "src/app/stores/AppStore.ts";
 
 interface AdminPageLayoutProps {
     title: string;
+    titleChip?: ReactNode;
     children: ReactNode;
     actions?: ReactNode[];
 }
 
 export const AdminPageLayout = (props: AdminPageLayoutProps) => {
-    const { title, children, actions }: AdminPageLayoutProps = props;
+    const { title, children, actions, titleChip }: AdminPageLayoutProps = props;
     const navigate = useNavigate();
 
     const logout = () => {
@@ -33,7 +34,7 @@ export const AdminPageLayout = (props: AdminPageLayoutProps) => {
 
     return (
         <div className={styles.layout}>
-            <Header title={title} avatar={renderAvatar()} actions={actions} />
+            <Header title={title} titleChip={titleChip} avatar={renderAvatar()} actions={actions} />
             <div className={styles.content}>{children}</div>
         </div>
     );

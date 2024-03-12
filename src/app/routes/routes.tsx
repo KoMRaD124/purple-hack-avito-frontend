@@ -5,6 +5,7 @@ import AdminPageRoot from "src/features/layout/components/AdminPageRoot/AdminPag
 import { LoginPage } from "src/ui/components/LoginPage/LoginPage";
 /* import { HomePage } from "src/features/home/pages/HomePage.tsx";
  */import { MatrixListPage } from "src/features/matrix/pages/MatrixListPage";
+import { MatrixViewPage } from "src/features/matrixdata/pages/MatrixViewPage.tsx";
 
 export const routes: RouteObject[] = [
     {
@@ -22,6 +23,10 @@ export const routes: RouteObject[] = [
                     {
                         path: "/",
                         element: <MatrixListPage />,
+                    },
+                    {
+                        path: "/matrix/:id/view",
+                        element: <MatrixViewPage />,
                     },
                 ],
             },

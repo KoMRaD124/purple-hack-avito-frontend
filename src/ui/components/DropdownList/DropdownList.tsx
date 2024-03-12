@@ -16,7 +16,7 @@ interface DropdownListProps extends Pick<PopoverBaseProps, "arrowSide" | "arrowA
     onChange?: (option: DropdownListOption) => void;
     value?: DropdownListOptionValue;
     color?: DropdownListColor;
-    width?:any
+    fullWidth?: boolean;
 }
 
 export const DropdownList = (props: DropdownListProps) => {
@@ -42,7 +42,7 @@ export const DropdownList = (props: DropdownListProps) => {
         return (
             <div className={listClassName}>
                 {options.map((option, index) =>
-                    Array.isArray(option) ? renderOptionGroup(option, index) : renderOption(option),
+                    Array.isArray(option) ? renderOptionGroup(option, index) : renderOption(option, index),
                 )}
             </div>
         );
@@ -57,15 +57,15 @@ export const DropdownList = (props: DropdownListProps) => {
         );
     };
 
-    const renderOption = (option: DropdownListOption) => {
+    const renderOption = (option: DropdownListOption, index: number) => {
         return (
             <Button
                 type={"tertiary"}
                 color={color}
                 onClick={() => handleChange(option)}
-                disabled={option.value === value}
+                disabled={option.value === value || option.value === null}
                 align={"start"}
-                key={option.name}
+                key={index}
             >
                 {option.name}
             </Button>
@@ -74,14 +74,13 @@ export const DropdownList = (props: DropdownListProps) => {
 
     return (
         <PopoverBase
-            
             {...props}
             color={"contrast"}
             triggerEvent={"click"}
             content={renderList()}
             show={show}
             setShow={setShow}
-            width={width}
+            maxHeight={300}
         >
             {children}
         </PopoverBase>

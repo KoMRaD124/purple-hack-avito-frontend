@@ -49,12 +49,15 @@
     &.top {
         flex-direction: column;
     }
+
     &.right {
         flex-direction: row-reverse;
     }
+
     &.bottom {
         flex-direction: column-reverse;
     }
+
     &.left {
         flex-direction: row;
     }
@@ -62,9 +65,11 @@
     &.start {
         align-items: start;
     }
+
     &.center {
         align-items: center;
     }
+
     &.end {
         align-items: end;
     }
@@ -118,15 +123,20 @@
 }
 
 .card {
+    width: 100%;
     border-radius: var(--main-s);
     filter: drop-shadow(0 2px 12px rgba(7, 7, 7, 0.04));
+    overflow: auto;
+    overflow-x: hidden;
 
     &.accent {
         background-color: var(--color-components-background-accent-pale);
     }
+
     &.neutral {
         background-color: var(--color-components-background-neutral);
     }
+
     &.contrast {
         background-color: var(--color-components-background-contrast);
     }

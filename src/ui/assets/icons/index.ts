@@ -25,13 +25,13 @@ import IconSearch from "./Search.svg?react";
 import IconSort from "./Sort.svg?react";
 import IconClose from "./Close.svg?react";
 import IconClear from "./Clear.svg?react";
-import IconMatrix from "./Matrix.svg?react";
 
 import IconHome from "./Home.svg?react";
 import IconPlay from "./Play.svg?react";
 import IconArrowDown from "./Arrow-down.svg?react";
 
-
+import IconMatrix from "./Matrix.svg?react";
+import IconJournal from "./Journal.svg?react";
 
 export {
     IconAttention,
@@ -63,5 +63,6 @@ export {
     IconClear,
     IconPlay,
     IconArrowDown,
-    IconMatrix,
+    IconJournal,
+    IconMatrix
 };

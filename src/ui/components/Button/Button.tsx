@@ -24,6 +24,7 @@ export interface ButtonProps {
     align?: "center" | "start";
     edge?: "top" | "right" | "bottom" | "left";
     fullWidth?: boolean;
+    clickable?: boolean;
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
@@ -46,6 +47,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) =>
         align = "center",
         edge,
         fullWidth,
+        clickable = true
     }: ButtonProps = props;
     const isIconVariant = isValidElement<SVGElement>(children);
 
@@ -101,6 +103,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) =>
         { [styles.edgeBottom]: edge === "bottom" },
         { [styles.edgeLeft]: edge === "left" },
         { [styles.fullWidth]: fullWidth },
+        { [styles.clickable]: clickable},
         className,
     );
     return (
