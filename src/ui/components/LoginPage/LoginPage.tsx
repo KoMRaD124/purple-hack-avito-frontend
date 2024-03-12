@@ -89,10 +89,6 @@ export const LoginPage = () => {
             });
     };
 
-    /*  console.log(data);
-     console.log(user);
-     console.log(alertText()); */
-
     return (
         <div className={styles.body}>
             <div className={styles.leftside}>

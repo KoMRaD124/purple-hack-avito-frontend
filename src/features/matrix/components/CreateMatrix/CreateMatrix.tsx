@@ -13,15 +13,17 @@ import { Button } from "src/ui/components/Button/Button"
 
 
 
-export const CreateMatrix = observer(() => {
+export const CreateMatrix = observer(({ onClose }: { onClose: () => void }) => {
     const [nameValue, setNameValue] = useState("")
-    const [segmentId, setSegmentId] = useState("")
+    const [segmentId, setSegmentId] = useState<number | undefined>(0)
+    const [segmentName, setSegmentName] = useState("")
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>,): void => {
         setNameValue(event.target.value);
     };
     const handleInputChangeSegment = (event: ChangeEvent<HTMLInputElement>,): void => {
-        setSegmentId(event.target.value);
+        setSegmentName(event.target.value);
+        setSegmentId
     };
     const [radioValue, setRadioValue] = useState("BASELINE")
 
@@ -31,9 +33,14 @@ export const CreateMatrix = observer(() => {
         value: number,
     }));
     const onChange = (option: DropdownListOption) => {
-        setSegmentId(option.name)
+        setSegmentName(option.name)
+        setSegmentId(option.value)
     };
-
+    const filtredSegments = segments.filter((item) =>
+        item.name.toLowerCase().includes(segmentName.toLowerCase())
+    )
+   
+    console.log(segmentId)
     return (
         <div className={styles.container}>
             <div className={styles.header}>Новая матрица</div>
@@ -49,10 +56,10 @@ export const CreateMatrix = observer(() => {
                     </RadioGroup></div>
             </div>
             {radioValue === "DISCOUNT" && <div className={styles.segmetType}>
-                <DropdownList options={segments} onChange={onChange}  >
+                <DropdownList options={filtredSegments} onChange={onChange} width={320}  >
                     <Input formName="Сегмент"
                         placeholder="Номер сегмента"
-                        value={segmentId}
+                        value={segmentName}
                         onChange={handleInputChangeSegment}
                         endIcon={<ButtonIcon color='neutral'>
                             <IconArrowDown />
@@ -62,7 +69,7 @@ export const CreateMatrix = observer(() => {
             </div>}
             <div className={styles.buttonBlock}>
                 <Button>Далее</Button>
-                <Button>Отмена</Button>
+                <Button onClick={onClose}>Отмена</Button>
 
             </div>
         </div>

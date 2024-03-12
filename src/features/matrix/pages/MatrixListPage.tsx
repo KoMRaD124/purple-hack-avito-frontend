@@ -134,6 +134,9 @@ export const MatrixListPage = observer(() => {
     const handleOpen = () => {
         setOpen(true);
     };
+    const handleCloseCreate = () => {
+        setOpen(false);
+    };
     const handleOpenSuccesfull = () => {
         setOpenSuccesfull(true);
         sendNewMatrix()
@@ -243,7 +246,7 @@ export const MatrixListPage = observer(() => {
                     <RadioGroup value={currentBaselineId} onChange={setCurrentBaselineId}>
                         {matrixArray.length > 0 ? matrixArray : <div className={styles.nf}> <IconSearch />Не найдена матрица с таким названием...</div>}</RadioGroup>
                 </div>
-                <Modal open={open} /* onClose={handleClose} */><CreateMatrix /></Modal>
+                <Modal open={open} /* onClose={handleClose} */><CreateMatrix onClose={handleCloseCreate} /></Modal>
                 <Modal open={openSuccesfull} onClose={handleClose}><MatrixSuccesfull onClick={handleClose} currentBaseline={currentBaselineId} currentDiscount={selectedCheckboxes} /></Modal>
 
             </div>

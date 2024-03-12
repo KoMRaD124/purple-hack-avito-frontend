@@ -27,6 +27,7 @@ export interface PopoverBaseProps {
     delay?: number;
     maxWidth?: number;
     show?: boolean;
+    width?: number
     setShow?: (show: boolean) => void;
 }
 
@@ -44,6 +45,7 @@ export const PopoverBase = (props: PopoverBaseProps) => {
         arrowAlign,
         delay,
         maxWidth,
+        width,
     }: PopoverBaseProps = props;
     const childrenRef = useRef<HTMLElement>(null);
     const popoverRef = useRef<HTMLDivElement>(null);
@@ -229,7 +231,7 @@ export const PopoverBase = (props: PopoverBaseProps) => {
                 <div className={arrowClassName} />
                 <div
                     className={clsx(styles.card, styles[color])}
-                    style={{ maxWidth: `${maxWidth}px` }}
+                    style={{ maxWidth: `${maxWidth}px`, width: `${width}px` }}
                 >
                     {content}
                 </div>

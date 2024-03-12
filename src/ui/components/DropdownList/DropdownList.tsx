@@ -20,7 +20,7 @@ interface DropdownListProps extends Pick<PopoverBaseProps, "arrowSide" | "arrowA
 }
 
 export const DropdownList = (props: DropdownListProps) => {
-    const { children, options, onChange, color = "accent" }: DropdownListProps = props;
+    const { children, options, onChange, color = "accent",width }: DropdownListProps = props;
     const [show, setShow] = useState(false);
     const [value, setValue] = useState<DropdownListOptionValue>(props.value ?? null);
 
@@ -81,6 +81,7 @@ export const DropdownList = (props: DropdownListProps) => {
             content={renderList()}
             show={show}
             setShow={setShow}
+            width={width}
         >
             {children}
         </PopoverBase>
