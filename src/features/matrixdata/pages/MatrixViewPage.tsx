@@ -1,15 +1,19 @@
 import { observer } from "mobx-react-lite";
 import { AdminPageLayout } from "src/features/layout/components/AdminPageLayout/AdminPageLayout.tsx";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { store } from "src/app/stores/AppStore.ts";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "src/ui/components/Button/Button.tsx";
 import { MatrixData } from "src/features/matrixdata/components/MatrixData/MatrixData.tsx";
-import { ICategory } from "src/features/matrixdata/stores/MatrixDataStore.tsx";
+import { IconBasket } from "src/ui/assets/icons";
+import Modal from "@mui/material/Modal";
+import { CloneMatrix } from "src/features/matrixdata/components/CloneMatrix/CloneMatrix.tsx";
 
 export const MatrixViewPage = observer(() => {
     const params = useParams<{ id: string }>();
     const matrix = store.matrix.allMatrix.find((elem) => elem.id.toString() === params.id);
+    const navigate = useNavigate();
+    const [openClone, setOpenClone] = useState(false);
 
     useEffect(() => {
         if (!store.matrix.allMatrix.length) {
@@ -21,24 +25,78 @@ export const MatrixViewPage = observer(() => {
         if (!store.matrix.location.length) {
             store.matrix.getLocation();
         }
+        if (!store.matrix.segment.length) {
+            store.matrix.getSegment();
+        }
     }, []);
+
+    if (!matrix) {
+        return <AdminPageLayout title={"Загрузка..."}>Загрузка...</AdminPageLayout>;
+    }
+
+    const getTitleChip = () => (
+        <Button
+            type={"secondary"}
+            color={
+                {
+                    ACTIVE: "positive",
+                    INACTIVE: "neutral",
+                    DRAFT: "neutral",
+                }[matrix.status] as any
+            }
+            clickable={false}
+        >
+            {
+                {
+                    ACTIVE: "Активно",
+                    INACTIVE: "Неактивно",
+                    DRAFT: "Черновик",
+                }[matrix.status]
+            }
+        </Button>
+    );
+
+    const getActions = () => {
+        const actions = [];
+        if (matrix.status === "ACTIVE" || matrix.status === "INACTIVE") {
+            actions.push(
+                <Button key={"clone"} onClick={() => setOpenClone(true)}>Создать копию и редактировать</Button>,
+                <Button key={"logs"} type={"tertiary"} onClick={() => navigate("/logs")}>
+                    Журнал изменений
+                </Button>,
+            );
+        } else {
+            actions.push(
+                <Button key={"setPrice"} type={"secondary"}>
+                    Задать цену
+                </Button>,
+                <Button
+                    key={"deletePrice"}
+                    type={"secondary"}
+                    color={"negative"}
+                    startIcon={<IconBasket />}
+                >
+                    Удалить цену
+                </Button>,
+                <Button key={"save"} style={{ marginLeft: "auto" }}>
+                    Сохранить
+                </Button>,
+            );
+        }
+        return actions;
+    };
 
     return (
         <AdminPageLayout
             title={matrix?.name ?? "Загрузка..."}
-            titleChip={
-                <Button type={"secondary"} color={"positive"} clickable={false}>
-                    Активно
-                </Button>
-            }
-            actions={[
-                <Button key={"clone"}>Создать копию и редактировать</Button>,
-                <Button key={"logs"} type={"tertiary"}>
-                    Журнал изменений
-                </Button>,
-            ]}
+            titleChip={getTitleChip()}
+            actions={getActions()}
+            onBack={() => navigate("/")}
         >
             {matrix ? <MatrixData matrix={matrix} /> : "Загрузка..."}
+            <Modal open={openClone}>
+                <CloneMatrix onClose={() => setOpenClone(false)} matrix={matrix} />
+            </Modal>
         </AdminPageLayout>
     );
 });

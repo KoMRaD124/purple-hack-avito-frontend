@@ -1,3 +1,6 @@
+@import "src/ui/styles/vars";
+@import "src/ui/styles/functions";
+
 .inputContainer {
     position: relative;
     width: 100%;
@@ -44,6 +47,10 @@
             }
         }
     }
+
+    &:has(.inputBorder.disabled) {
+        background-color: disabled-primary($color-components-background-neutral-pale);
+    }
 }
 
 .inputBorder {
@@ -64,8 +71,7 @@
     }
 
     &.disabled {
-        border: 1px solid var(--color-components-stroke-neutral-pale, #9c9c9c);
-        background-color: #ffffffad;
+        border: 1px solid disabled-primary($color-components-stroke-neutral-tertiary);
 
         &:hover {
             border: 1px solid var(--color-components-stroke-neutral-tertiary, #9c9c9c) !important;
@@ -139,7 +145,7 @@
     }
 
     &.disabled {
-        color: color-mix(in oklab, #070707, #ffffff 40%);
+        color: disabled-primary($color-components-text-neutral);
 
         &::placeholder {
             color: color-mix(in oklab, #070707, #ffffff 40%);

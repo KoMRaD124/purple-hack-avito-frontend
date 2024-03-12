@@ -1,3 +1,6 @@
+@import "src/ui/styles/vars";
+@import "src/ui/styles/functions";
+
 .button {
     display: flex;
     justify-content: center;
@@ -6,6 +9,7 @@
     position: relative;
     font-weight: 600;
     white-space: nowrap;
+    overflow: hidden;
 
     &:not(&.clickable) {
         pointer-events: none;

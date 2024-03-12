@@ -4,10 +4,12 @@ import { observer } from "mobx-react-lite";
 import { Card } from "src/ui/components/Card/Card.tsx";
 import { Input } from "src/ui/components/Input/Input.tsx";
 import { ButtonIcon } from "src/ui/components/ButtonIcon/ButtonIcon.tsx";
-import { IconClear } from "src/ui/assets/icons";
+import { IconArrowDown, IconClear } from "src/ui/assets/icons";
 import { store } from "src/app/stores/AppStore.ts";
 import { Button } from "src/ui/components/Button/Button.tsx";
 import { DropdownList } from "src/ui/components/DropdownList/DropdownList.tsx";
+import { ChangeEvent, useEffect, useState } from "react";
+import { MatrixDataCategory } from "src/features/matrixdata/components/MatrixDataCategory/MatrixDataCategory.tsx";
 
 interface MatrixDataProps {
     matrix: Matrix;
@@ -15,34 +17,101 @@ interface MatrixDataProps {
 
 export const MatrixData = observer((props: MatrixDataProps) => {
     const { matrix } = props;
+    const [segmentName, setSegmentName] = useState("");
+
+    const onChangeSegment = (option: any) => {
+        setSegmentName(option.name);
+        matrix.segmentId = option.value;
+    };
+    const segments = store.matrix.segment.map((number) => ({
+        name: `Сегмент-${number}`,
+        value: number,
+    }));
+    const filteredSegments = segments.filter((item) =>
+        item.name.toLowerCase().includes(segmentName.toLowerCase()),
+    );
+    const handleInputChangeSegment = (event: ChangeEvent<HTMLInputElement>): void => {
+        setSegmentName(event.target.value);
+        if (segmentName !== event.target.value) {
+            matrix.segmentId = null;
+        }
+    };
+    useEffect(() => {
+        setSegmentName(`Сегмент-${matrix.segmentId}`);
+    }, []);
+
+    useEffect(() => {
+        store.matrixData.fetchMatrixData(matrix.id);
+        return () => {
+            store.matrixData.setLocationSearch("");
+            store.matrixData.setCategorySearch("");
+        };
+    }, [matrix.id]);
 
     return (
         <div className={styles.layout}>
             <div className={styles.column}>
                 <Card title={"Основная информация"}>
                     <div className={styles.mainInfo}>
-                        <div className={styles.mainInfoCol}>
-                            <div className={styles.mainInfoColLabel}>Тип матрицы</div>
-                            <div className={styles.mainInfoColValue}>
-                                {matrix.type === "BASELINE" ? "Baseline" : "Discount"}
+                        <div className={styles.mainInfoRow}>
+                            <div className={styles.mainInfoCol}>
+                                <div className={styles.mainInfoColLabel}>ID</div>
+                                <div className={styles.mainInfoColValue}>{matrix.id}</div>
+                            </div>
+                            <div className={styles.mainInfoCol}>
+                                <div className={styles.mainInfoColLabel}>Тип матрицы</div>
+                                <div className={styles.mainInfoColValue}>
+                                    {matrix.type === "BASELINE" ? "Baseline" : "Discount"}
+                                </div>
+                            </div>
+                            <div className={styles.mainInfoCol}>
+                                <div className={styles.mainInfoColLabel}>Дата создания</div>
+                                <div className={styles.mainInfoColValue}>
+                                    {new Date(matrix.createDate).toLocaleDateString()}
+                                </div>
+                            </div>
+                            <div className={styles.mainInfoCol}>
+                                <div className={styles.mainInfoColLabel}>Количество цен</div>
+                                <div className={styles.mainInfoColValue}>
+                                    {matrix.priceCount ?? "-"}
+                                </div>
                             </div>
                         </div>
-                        <div className={styles.mainInfoCol}>
-                            <div className={styles.mainInfoColLabel}>Дата создания</div>
-                            <div className={styles.mainInfoColValue}>
-                                {new Date(matrix.createDate).toLocaleDateString()}
+                        {matrix.segmentId && (
+                            <div className={styles.mainInfoRow}>
+                                <DropdownList
+                                    options={filteredSegments}
+                                    onChange={onChangeSegment}
+                                    fullWidth={true}
+                                    color="neutral"
+                                >
+                                    <Input
+                                        formName="Сегмент"
+                                        placeholder="Номер сегмента"
+                                        value={segmentName}
+                                        onChange={handleInputChangeSegment}
+                                        formText={
+                                            matrix.status === "DRAFT"
+                                                ? "Выберите сегмент из списка"
+                                                : undefined
+                                        }
+                                        size={"small"}
+                                        disabled={matrix.status !== "DRAFT"}
+                                        endIcon={
+                                            matrix.status === "DRAFT" && (
+                                                <ButtonIcon
+                                                    color="neutral"
+                                                    size={"small"}
+                                                    disabled={matrix.status !== "DRAFT"}
+                                                >
+                                                    <IconArrowDown />
+                                                </ButtonIcon>
+                                            )
+                                        }
+                                    />
+                                </DropdownList>
                             </div>
-                        </div>
-                        <div className={styles.mainInfoCol}>
-                            <div className={styles.mainInfoColLabel}>Количество цен</div>
-                            <div className={styles.mainInfoColValue}>
-                                {matrix.priceCount ?? "-"}
-                            </div>
-                        </div>
-                        <div className={styles.mainInfoCol}>
-                            <div className={styles.mainInfoColLabel}>Сегмент</div>
-                            <div className={styles.mainInfoColValue}>{matrix.segmentId ?? "-"}</div>
-                        </div>
+                        )}
                     </div>
                 </Card>
                 <Card
@@ -68,11 +137,18 @@ export const MatrixData = observer((props: MatrixDataProps) => {
                         </div>
                     }
                 >
-                    123
+                    <MatrixDataCategory
+                        matrix={matrix}
+                        category={store.matrixData.getRootCategory()}
+                        root={true}
+                    />
+                    {store.matrixData.getCategories().map((category) => (
+                        <MatrixDataCategory matrix={matrix} category={category} />
+                    ))}
                 </Card>
             </div>
             <div className={styles.column}>
-                <Card title={"Фильтры"}>
+                <Card title={"Фильтры"} className={styles.filterCard}>
                     <div className={styles.filters}>
                         <DropdownList
                             value={store.matrixData.category}
@@ -106,10 +182,12 @@ export const MatrixData = observer((props: MatrixDataProps) => {
                                     )
                                 }
                                 onBlur={() =>
-                                    setTimeout(() =>
-                                        store.matrixData.setCategorySearch(
-                                            store.matrixData.category?.name ?? "",
-                                        ), 100
+                                    setTimeout(
+                                        () =>
+                                            store.matrixData.setCategorySearch(
+                                                store.matrixData.category?.name ?? "",
+                                            ),
+                                        100,
                                     )
                                 }
                             />
@@ -147,10 +225,12 @@ export const MatrixData = observer((props: MatrixDataProps) => {
                                     )
                                 }
                                 onBlur={() =>
-                                    setTimeout(() =>
-                                        store.matrixData.setLocationSearch(
-                                            store.matrixData.location?.name ?? "",
-                                        ), 100
+                                    setTimeout(
+                                        () =>
+                                            store.matrixData.setLocationSearch(
+                                                store.matrixData.location?.name ?? "",
+                                            ),
+                                        100,
                                     )
                                 }
                             />
