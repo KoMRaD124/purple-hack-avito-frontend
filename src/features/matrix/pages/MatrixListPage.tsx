@@ -13,8 +13,8 @@ import { store } from "src/app/stores/AppStore";
 import { CreateMatrix } from "../components/CreateMatrix/CreateMatrix";
 import { RadioGroup } from "src/ui/components/RadioGroup/RadioGroup";
 import { MatrixSuccesfull } from "../components/MatrixSuccesfull/MatrixSuccesfull";
-/* import axios from "axios";
-import { POST_NEW_SET } from "src/shared/api/endpoints"; */
+import axios from "axios";
+import { POST_NEW_SET } from "src/shared/api/endpoints";
 
 export interface MatrixData {
     segmentId: number | null;
@@ -47,7 +47,6 @@ export const MatrixListPage = observer(() => {
         }
     }
     const currentActiveBaseline = store.matrix.allMatrix.filter((item: any) => item.type === 'BASELINE' && item.status === 'ACTIVE');
-    const currentActiveDiscount = store.matrix.allMatrix.filter((item: any) => item.type === 'DISCOUNT' && item.status === 'ACTIVE');
     const currentActiveBaselineId: any = currentActiveBaseline[0]?.id
 
     useEffect(() => {
@@ -56,10 +55,10 @@ export const MatrixListPage = observer(() => {
         store.matrix.getLocation()
         store.matrix.getSegment()
         setCurrentBaselineId(currentActiveBaselineId as any)
-       
+
         setSelectedCheckboxes([...store.matrix.activeMatrixID])
 
-    }, [currentActiveBaselineId,store.matrix.activeMatrixID])
+    }, [currentActiveBaselineId, store.matrix.activeMatrixID])
     const filteredResults = store.matrix.allMatrix.filter((item: any) =>
         item.name.toLowerCase().includes(searchValue.toLowerCase())
     );
@@ -93,7 +92,7 @@ export const MatrixListPage = observer(() => {
             : aValue > bValue ? 1 : aValue < bValue ? -1 : 0;
     });
     console.log(currentBaselineId)
-    const [changedDicountMatrix, setChangedDicountMatrix]=useState<number[]>([])
+    const [changedDicountMatrix, setChangedDicountMatrix] = useState<number[]>([])
     const handleCheckboxChange = (itemId: number) => {
         const isSelected = selectedCheckboxes.includes(itemId);
         const isSelectedChanged = changedDicountMatrix.includes(itemId);
@@ -137,11 +136,28 @@ export const MatrixListPage = observer(() => {
     };
     const handleOpenSuccesfull = () => {
         setOpenSuccesfull(true);
+        sendNewMatrix()
     };
     const handleClose = () => {
         setOpenSuccesfull(false);
     };
 
+    const data = {
+        baselineMatrixId: currentBaselineId,
+        discountMatrixIds: selectedCheckboxes
+
+
+    }
+    console.log(data)
+    const sendNewMatrix = () => {
+        axios.post(POST_NEW_SET, data)
+            .then(() => {
+                store.matrix.getMatrix()
+                setChangedDicountMatrix([])
+                setActiveButton("active")
+            })
+
+    }
     return (
         <AdminPageLayout title={"Ценовые матрицы"}>
             <div className={styles.container}>
