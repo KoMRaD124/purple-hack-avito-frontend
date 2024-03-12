@@ -5,6 +5,9 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { store } from "src/app/stores/AppStore";
 import { LOGIN_ENDPOINT } from "src/shared/api/endpoints.ts";
+import logo from 'src/ui/assets/logo.svg'
+import BG from 'src/ui/assets/BG.png'
+
 export const LoginPage = () => {
     const [emailValue, setEmailValue] = useState("");
     const [passValue, setPassValue] = useState("");
@@ -14,8 +17,8 @@ export const LoginPage = () => {
     const [blockTimeCount, setblockTimeCount] = useState();
     const [blockButton, setBlockbutton] = useState(false);
     const [error, setError] = useState(false);
-/*     const [user, setUser] = useState({});
- */
+    /*     const [user, setUser] = useState({});
+     */
     const navigate = useNavigate();
 
     function getMinutesWord(minutes: number) {
@@ -86,13 +89,16 @@ export const LoginPage = () => {
             });
     };
 
-   /*  console.log(data);
-    console.log(user);
-    console.log(alertText()); */
+    /*  console.log(data);
+     console.log(user);
+     console.log(alertText()); */
 
     return (
         <div className={styles.body}>
-            <div className={styles.leftside}></div>
+            <div className={styles.leftside}>
+                <div className={styles.header}><img src={logo} alt="" /></div>
+                <div className={styles.img}> <img className={styles.image} src={BG} alt="" /></div>
+            </div>
             <div className={styles.rightside}>
                 <LoginForm
                     email={emailValue}

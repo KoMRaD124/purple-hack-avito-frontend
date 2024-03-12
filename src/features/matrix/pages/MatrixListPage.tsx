@@ -8,15 +8,13 @@ import { ButtonIcon } from "src/ui/components/ButtonIcon/ButtonIcon";
 import { Button } from "src/ui/components/Button/Button";
 import { Popover } from "src/ui/components/Popover/Popover";
 import { MatrixItem } from "../components/MatrixItem/MatrixItem";
-/* import axios from "axios";
- */import Modal from '@mui/material/Modal';
-/* import { GET_ALL_MATRIX } from "src/shared/api/endpoints";
- *//* import { Box, Typography } from "@mui/material"; */
+import Modal from '@mui/material/Modal';
 import { store } from "src/app/stores/AppStore";
 import { CreateMatrix } from "../components/CreateMatrix/CreateMatrix";
 import { RadioGroup } from "src/ui/components/RadioGroup/RadioGroup";
-import axios from "axios";
-import { POST_NEW_SET } from "src/shared/api/endpoints";
+import { MatrixSuccesfull } from "../components/MatrixSuccesfull/MatrixSuccesfull";
+/* import axios from "axios";
+import { POST_NEW_SET } from "src/shared/api/endpoints"; */
 
 export interface MatrixData {
     segmentId: number | null;
@@ -49,7 +47,8 @@ export const MatrixListPage = observer(() => {
         }
     }
     const currentActiveBaseline = store.matrix.allMatrix.filter((item: any) => item.type === 'BASELINE' && item.status === 'ACTIVE');
-    const currentActiveBaselineId = currentActiveBaseline[0]?.id
+    const currentActiveDiscount = store.matrix.allMatrix.filter((item: any) => item.type === 'DISCOUNT' && item.status === 'ACTIVE');
+    const currentActiveBaselineId: any = currentActiveBaseline[0]?.id
 
     useEffect(() => {
         store.matrix.getMatrix()
@@ -57,8 +56,10 @@ export const MatrixListPage = observer(() => {
         store.matrix.getLocation()
         store.matrix.getSegment()
         setCurrentBaselineId(currentActiveBaselineId as any)
+       
+        setSelectedCheckboxes([...store.matrix.activeMatrixID])
 
-    }, [currentActiveBaselineId])
+    }, [currentActiveBaselineId,store.matrix.activeMatrixID])
     const filteredResults = store.matrix.allMatrix.filter((item: any) =>
         item.name.toLowerCase().includes(searchValue.toLowerCase())
     );
@@ -92,13 +93,21 @@ export const MatrixListPage = observer(() => {
             : aValue > bValue ? 1 : aValue < bValue ? -1 : 0;
     });
     console.log(currentBaselineId)
+    const [changedDicountMatrix, setChangedDicountMatrix]=useState<number[]>([])
     const handleCheckboxChange = (itemId: number) => {
         const isSelected = selectedCheckboxes.includes(itemId);
+        const isSelectedChanged = changedDicountMatrix.includes(itemId);
 
+        console.log(selectedCheckboxes)
         if (isSelected) {
             setSelectedCheckboxes(selectedCheckboxes.filter(id => id !== itemId));
         } else {
             setSelectedCheckboxes([...selectedCheckboxes, itemId]);
+        }
+        if (isSelectedChanged) {
+            setChangedDicountMatrix(changedDicountMatrix.filter(id => id !== itemId));
+        } else {
+            setChangedDicountMatrix([...changedDicountMatrix, itemId]);
         }
     }
 
@@ -119,17 +128,18 @@ export const MatrixListPage = observer(() => {
     const [selectedCheckboxes, setSelectedCheckboxes] = useState<number[]>([]);
     console.log(selectedCheckboxes)
 
-    const data = {
-        baselineMatrixId: currentBaselineId,
-        discountMatrixIds: selectedCheckboxes
-    }
     const [open, setOpen] = useState(false)
+    const [openSuccesfull, setOpenSuccesfull] = useState(false)
+
 
     const handleOpen = () => {
         setOpen(true);
     };
+    const handleOpenSuccesfull = () => {
+        setOpenSuccesfull(true);
+    };
     const handleClose = () => {
-        setOpen(false);
+        setOpenSuccesfull(false);
     };
 
     return (
@@ -151,11 +161,15 @@ export const MatrixListPage = observer(() => {
                             } />
                     </div>
                     <div className={styles.buttonAddContainer}>
-                        <Button disabled={selectedCheckboxes.length === 0} size="large">Применить изменения</Button>
+                        <Button onClick={handleOpenSuccesfull} counterValue={changedDicountMatrix.length > 0 || !(currentBaselineId == currentActiveBaselineId) ? (changedDicountMatrix.length + Number(!(currentBaselineId == currentActiveBaselineId))) : undefined} disabled={((changedDicountMatrix.length === 0) && (currentBaselineId == currentActiveBaselineId))} size="large">Применить изменения</Button>
                         <Popover
                             maxWidth={224}
                             header={"Работа с матрицами"}
-                            text={`Активные матрицы имеют соответствующий статус. Для того чтобы изменить его, необходимо убрать выделение с нужных матриц и применить изменения. Матрица изменит статус на «Неактивно». Для изменения матриц со статусами «Неактивно» и «Черновик» необходимо выбрать нужные и применить изменения. Если не применить изменения, то выбранные матрицы не поменяют свой статус.`}
+                            text={<>Текущие матрицы, установленные в сервисе ценообразования, имеют статус «Активно». <br /><br />
+
+                                Для того чтобы изменить активные матрицы, необходимо убрать или добавить выделение для нужных матриц и применить изменения.<br /><br />
+
+                                Если не применить изменения, то выбранные матрицы не поменяют свой статус.</>}
                             color='neutral'
                             arrowAlign='end'
                         >
@@ -211,9 +225,10 @@ export const MatrixListPage = observer(() => {
                 </div>
                 <div className={styles.matrixList}>
                     <RadioGroup value={currentBaselineId} onChange={setCurrentBaselineId}>
-                        {matrixArray.length > 0 ? matrixArray : <div className={styles.nf}>Ничего не найдено!</div>}</RadioGroup>
+                        {matrixArray.length > 0 ? matrixArray : <div className={styles.nf}> <IconSearch />Не найдена матрица с таким названием...</div>}</RadioGroup>
                 </div>
-                <Modal open={open} onClose={handleClose}><CreateMatrix /></Modal>
+                <Modal open={open} /* onClose={handleClose} */><CreateMatrix /></Modal>
+                <Modal open={openSuccesfull} onClose={handleClose}><MatrixSuccesfull onClick={handleClose} currentBaseline={currentBaselineId} currentDiscount={selectedCheckboxes} /></Modal>
 
             </div>
 

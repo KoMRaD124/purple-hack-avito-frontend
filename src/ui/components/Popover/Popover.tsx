@@ -5,7 +5,7 @@ import { PopoverBase, PopoverBaseProps } from "src/ui/components/PopoverBase/Pop
 
 interface PopoverProps extends Omit<PopoverBaseProps, "triggerEvent" | "content"> {
     header?: string;
-    text?: string;
+    text?: string |any;
     footer?: ReactNode;
 }
 

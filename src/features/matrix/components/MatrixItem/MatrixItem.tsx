@@ -62,11 +62,13 @@ export const MatrixItem = ({ name, type, status, priceCount, segmentId, id, date
             setValue(true)
 
         }
-        if (status === "ACTIVE" && value) {
+      /*   if (status === "ACTIVE" && type === "DISCOUNT") {
             if (handleCheckboxChange) {
+                console.log(id)
                 handleCheckboxChange(id);
+                
             }
-        }
+        } */
     }, [])
 
     return (

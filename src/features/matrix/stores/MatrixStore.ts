@@ -14,6 +14,7 @@ export class MatrixStore {
     location: locationTypes[] = []
     category: locationTypes[] = []
     segment: number[] = []
+    activeMatrixID: number[] = []
     constructor() {
         makeAutoObservable(this);
     }
@@ -22,6 +23,7 @@ export class MatrixStore {
         try {
             const response = await axios.get(GET_ALL_MATRIX);
             this.setMatrix(response.data);
+            this.setActiveMatrixId()
         } catch (error) {
             console.log(error)
         }
@@ -54,6 +56,17 @@ export class MatrixStore {
     setMatrix(matrix: MatrixData[]) {
         this.allMatrix = matrix;
     }
+    setActiveMatrixId() {
+        const currentActiveDiscount = this.allMatrix.filter((item: any) => item.type === 'DISCOUNT' && item.status === 'ACTIVE');
+        for (let i = 0; i < currentActiveDiscount.length; i++) {
+            if (this.activeMatrixID.includes(currentActiveDiscount[i].id)) continue
+            else { this.activeMatrixID.push(currentActiveDiscount[i].id) }
+
+            
+        }
+
+    }
+
 }
 
 

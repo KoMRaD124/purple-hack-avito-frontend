@@ -25,6 +25,7 @@ import IconSearch from "./Search.svg?react";
 import IconSort from "./Sort.svg?react";
 import IconClose from "./Close.svg?react";
 import IconClear from "./Clear.svg?react";
+import IconMatrix from "./Matrix.svg?react";
 
 import IconHome from "./Home.svg?react";
 import IconPlay from "./Play.svg?react";
@@ -62,4 +63,5 @@ export {
     IconClear,
     IconPlay,
     IconArrowDown,
+    IconMatrix,
 };

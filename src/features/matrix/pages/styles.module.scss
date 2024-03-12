@@ -51,11 +51,13 @@
 .reversButton {
     transform: rotate(180deg);
 }
-.sortIcon{
+
+.sortIcon {
     margin-left: 32px;
 }
+
 .sortName {
-    
+
     color: #070707;
     opacity: 0.6;
     font-family: Manrope;
@@ -68,7 +70,8 @@
     display: flex;
     align-items: center;
     height: 60px;
-    border-left: 1px solid var(--color-components-stroke-neutral-pale, #E6E6E6);;
+    border-left: 1px solid var(--color-components-stroke-neutral-pale, #E6E6E6);
+    ;
 }
 
 .sortType {
@@ -103,11 +106,13 @@
     padding-top: 20px;
     padding-bottom: 20px;
     color: var(--color-components-text-neutral, #070707);
-    /* Desktop/Headings/H4 */
     font-family: Manrope;
-    font-size: 24px;
+    font-size: 16px;
     font-style: normal;
-    font-weight: 700;
-    line-height: 120%;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.32px;
+    display: flex;
+    gap: 16px;
     /* 28.8px */
 }
