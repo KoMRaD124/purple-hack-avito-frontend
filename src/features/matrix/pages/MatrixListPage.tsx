@@ -214,7 +214,10 @@ export const MatrixListPage = observer(() => {
                 </div>
                 <div className={styles.matrixSort}>
                     <div className={styles.sortIcon}><IconEdit width={18} height={18} /></div>
+                    <div></div>
+                    <div className={styles.sortID}>ID</div>
                     <div className={styles.sortName}>Название</div>
+                    
 
                     <div className={styles.sortType}>
                         <Button onClick={() => OnClickTypeButton("type")}
