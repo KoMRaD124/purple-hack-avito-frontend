@@ -39,7 +39,8 @@ export const JournalPage = observer(() => {
     const filtredArray = updatedArray.filter((item: any) =>
         item.name.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase()) ||
         item.eventType.toLocaleLowerCase().includes(searchValue) ||
-        item.userEmail.toLocaleLowerCase().includes(searchValue)
+        item.userEmail.toLocaleLowerCase().includes(searchValue) ||
+        item.matrixId.toString().includes(searchValue) 
     );
     const journalArray = filtredArray.map((item: any) => {
         return <JournalItem key={item.id} name={item.name}
