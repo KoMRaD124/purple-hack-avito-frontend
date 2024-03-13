@@ -745,7 +745,7 @@ export const StatisticsPage = observer(() => {
                         <div className={styles.drawerBlockItem}>Отчет за 06.02.2034 <Button onClick={downloadImage} type='tertiary'>Скачать</Button></div>
                         <div className={styles.drawerBlockItem}>Отчет за 01.02.2034 <Button onClick={downloadImage} type='tertiary'>Скачать</Button></div>
                         <div className={styles.drawerBlockItem}>Отчет за 23.01.2034 <Button onClick={downloadImage} type='tertiary'>Скачать</Button></div>
-                        <div className={styles.drawerBlockItem}>Отчет за 12.02.2034 <Button onClick={downloadImage} type='tertiary'>Скачать</Button></div>
+                        <div className={styles.drawerBlockItem}>Отчет за 12.01.2034 <Button onClick={downloadImage} type='tertiary'>Скачать</Button></div>
                     </div>
                 </div>
             </Drawer>
