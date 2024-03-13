@@ -325,7 +325,7 @@ export const StatisticsPage = observer(() => {
     },[])
     return (
         <AdminPageLayout title='Статистика' actions={[
-            <Button counterValue={counterValue > 0 ? counterValue : undefined} onClick={downloadImage} key={"clone"}>Сформировать отчет</Button>,
+            <Button disabled={Boolean(!(counterValue))}counterValue={counterValue > 0 ? counterValue : undefined} onClick={downloadImage} key={"clone"}>Сформировать отчет</Button>,
             <Button onClick={toggleDrawer(true)} key={"logs"} type={"secondary"}>
                 Готовые отчёты
             </Button>,
