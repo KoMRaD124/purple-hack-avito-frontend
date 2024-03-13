@@ -38,22 +38,28 @@ export const MatrixDataCategory = observer((props: MatrixDataCategoryProps) => {
                 >
                     {props.category.name}
                 </Button>
-                {props.matrix.priceCount && (
-                    <div className={styles.headerRight}>
-                        Задано цен
-                        <Counter
-                            value={
-                                store.matrixData.matrixData.filter(
-                                    (d) =>
-                                        d.price !== null &&
-                                        props.category.id === d.categoryId &&
-                                        allLocationIds.includes(d.locationId),
-                                ).length
-                            }
-                            color={"neutral"}
-                        />
-                    </div>
-                )}
+                {props.matrix.priceCount &&
+                    !!store.matrixData.matrixData.filter(
+                        (d) =>
+                            d.price !== null &&
+                            props.category.id === d.categoryId &&
+                            allLocationIds.includes(d.locationId),
+                    ).length && (
+                        <div className={styles.headerRight}>
+                            Задано цен
+                            <Counter
+                                value={
+                                    store.matrixData.matrixData.filter(
+                                        (d) =>
+                                            d.price !== null &&
+                                            props.category.id === d.categoryId &&
+                                            allLocationIds.includes(d.locationId),
+                                    ).length
+                                }
+                                color={"neutral"}
+                            />
+                        </div>
+                    )}
             </div>
             {expanded && (
                 <div className={styles.content}>
@@ -63,6 +69,7 @@ export const MatrixDataCategory = observer((props: MatrixDataCategoryProps) => {
                             location={store.matrixData.getRootLocation()}
                             category={props.category}
                             editable={props.matrix.status === "DRAFT"}
+                            titleSmall={false}
                         />
                     </div>
                     <div className={styles.childLocations}>
@@ -73,6 +80,7 @@ export const MatrixDataCategory = observer((props: MatrixDataCategoryProps) => {
                                     location={location}
                                     category={props.category}
                                     editable={props.matrix.status === "DRAFT"}
+                                    titleSmall={true}
                                 />
                             </div>
                         ))}

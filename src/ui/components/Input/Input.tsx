@@ -23,6 +23,7 @@ interface InputProps {
     onBlur?: () => void;
     disabled?: boolean;
     autoFocus?: boolean;
+    number?: boolean;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
@@ -44,6 +45,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
         disabled,
         style,
         autoFocus,
+        number
     }: InputProps = props;
 
     const inputClassName = clsx(
@@ -93,7 +95,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
                     )}
 
                     <input
-                        type={types}
+                        type={number ? "number" : types}
                         value={value}
                         className={clsx(styles.input, styles[size], {
                             [styles.focus]: isInputFocused,

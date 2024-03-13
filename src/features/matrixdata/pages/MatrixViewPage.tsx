@@ -8,9 +8,8 @@ import { MatrixData } from "src/features/matrixdata/components/MatrixData/Matrix
 import { IconBasket } from "src/ui/assets/icons";
 import Modal from "@mui/material/Modal";
 import { CloneMatrix } from "src/features/matrixdata/components/CloneMatrix/CloneMatrix.tsx";
-import {
-    SaveMatrixDataSuccesfull
-} from "src/features/matrixdata/components/SaveMatrixDataSuccesfull/SaveMatrixDataSuccesfull.tsx";
+import { SaveMatrixDataSuccesfull } from "src/features/matrixdata/components/SaveMatrixDataSuccesfull/SaveMatrixDataSuccesfull.tsx";
+import { ChangePriceMatrix } from "src/features/matrixdata/components/ChangePriceMatrix/ChangePriceMatrix.tsx";
 
 export const MatrixViewPage = observer(() => {
     const params = useParams<{ id: string }>();
@@ -18,6 +17,7 @@ export const MatrixViewPage = observer(() => {
     const navigate = useNavigate();
     const [openClone, setOpenClone] = useState(false);
     const [openSuccessful, setOpenSuccessful] = useState(false);
+    const [openChange, setOpenChange] = useState(false);
 
     useEffect(() => {
         if (!store.matrix.allMatrix.length) {
@@ -45,7 +45,7 @@ export const MatrixViewPage = observer(() => {
                 {
                     ACTIVE: "positive",
                     INACTIVE: "neutral",
-                    DRAFT: "neutral"
+                    DRAFT: "neutral",
                 }[matrix.status] as any
             }
             clickable={false}
@@ -54,7 +54,7 @@ export const MatrixViewPage = observer(() => {
                 {
                     ACTIVE: "Активно",
                     INACTIVE: "Неактивно",
-                    DRAFT: "Черновик"
+                    DRAFT: "Черновик",
                 }[matrix.status]
             }
         </Button>
@@ -67,9 +67,13 @@ export const MatrixViewPage = observer(() => {
                 <Button key={"clone"} onClick={() => setOpenClone(true)}>
                     Создать копию и редактировать
                 </Button>,
-                <Button key={"logs"} type={"tertiary"} onClick={() => navigate("/logs")}>
+                <Button
+                    key={"logs"}
+                    type={"tertiary"}
+                    onClick={() => navigate(`/logs?search=${matrix?.id}`)}
+                >
                     Журнал изменений
-                </Button>
+                </Button>,
             );
         } else {
             actions.push(
@@ -77,6 +81,9 @@ export const MatrixViewPage = observer(() => {
                     key={"setPrice"}
                     type={"secondary"}
                     disabled={!store.matrixData.selectedMatrixData.length}
+                    onClick={() => {
+                        setOpenChange(true);
+                    }}
                 >
                     Задать цену
                 </Button>,
@@ -86,15 +93,26 @@ export const MatrixViewPage = observer(() => {
                     color={"negative"}
                     startIcon={<IconBasket />}
                     disabled={!store.matrixData.selectedMatrixData.length}
+                    onClick={() => {
+                        store.matrixData.selectedMatrixData.forEach((d) => (d.price = null));
+                        store.matrixData.selectedMatrixData = [];
+                    }}
                 >
                     Удалить цену
                 </Button>,
-                <Button key={"save"} style={{ marginLeft: "auto" }} onClick={() => {
-                    store.matrixData.saveMatrixData();
-                    setOpenSuccessful(true);
-                }}>
+                <Button
+                    key={"save"}
+                    style={{ marginLeft: "auto" }}
+                    onClick={() => {
+                        store.matrix.saveMatrix(matrix);
+                        store.matrixData.saveMatrixData().then(() => {
+                            store.matrix.getMatrix();
+                        });
+                        setOpenSuccessful(true);
+                    }}
+                >
                     Сохранить
-                </Button>
+                </Button>,
             );
         }
         return actions;
@@ -113,6 +131,87 @@ export const MatrixViewPage = observer(() => {
             </Modal>
             <Modal open={openSuccessful}>
                 <SaveMatrixDataSuccesfull onClick={() => setOpenSuccessful(false)} />
+            </Modal>
+            <Modal open={openChange}>
+                <ChangePriceMatrix
+                    onClose={() => setOpenChange(false)}
+                    onSave={(type, value, cascade) => {
+                        if (type === "fixed") {
+                            if (cascade) {
+                                store.matrixData.selectedMatrixData.forEach((d) => {
+                                    const locationId = d.locationId;
+                                    const categoryId = d.categoryId;
+                                    let categories = [categoryId];
+                                    if (categoryId === store.matrixData.getRootCategory().id) {
+                                        categories = [
+                                            ...categories,
+                                            ...store.matrixData.getCategories().map((c) => c.id),
+                                        ];
+                                    }
+                                    let locations = [locationId];
+                                    if (locationId === store.matrixData.getRootLocation().id) {
+                                        locations = [
+                                            ...locations,
+                                            ...store.matrixData.getLocations().map((l) => l.id),
+                                        ];
+                                    }
+                                    categories.forEach((c) => {
+                                        locations.forEach((l) => {
+                                            const data = store.matrixData.matrixData.find(
+                                                (d) => d.locationId === l && d.categoryId === c,
+                                            );
+                                            if (data) {
+                                                data.price = Number(value);
+                                            }
+                                        });
+                                    })
+                                });
+                            } else {
+                                store.matrixData.selectedMatrixData.forEach(
+                                    (d) => (d.price = Number(value)),
+                                );
+                            }
+                        } else {
+                            if (cascade) {
+                                store.matrixData.selectedMatrixData.forEach((d) => {
+                                    const locationId = d.locationId;
+                                    const categoryId = d.categoryId;
+                                    let categories = [categoryId];
+                                    if (categoryId === store.matrixData.getRootCategory().id) {
+                                        categories = [
+                                            ...categories,
+                                            ...store.matrixData.getCategories().map((c) => c.id),
+                                        ];
+                                    }
+                                    let locations = [locationId];
+                                    if (locationId === store.matrixData.getRootLocation().id) {
+                                        locations = [
+                                            ...locations,
+                                            ...store.matrixData.getLocations().map((l) => l.id),
+                                        ];
+                                    }
+                                    categories.forEach((c) => {
+                                        locations.forEach((l) => {
+                                            const data = store.matrixData.matrixData.find(
+                                                (d) => d.locationId === l && d.categoryId === c,
+                                            );
+                                            if (data && data.price) {
+                                                data.price = Number(value) * data.price;
+                                            }
+                                        });
+                                    })
+                                });
+                            } else {
+                                store.matrixData.selectedMatrixData.forEach((d) => {
+                                    if (d.price !== null) {
+                                        d.price = Number(value) * d.price;
+                                    }
+                                });
+                            }
+                        }
+                        setOpenChange(false);
+                    }}
+                />
             </Modal>
         </AdminPageLayout>
     );

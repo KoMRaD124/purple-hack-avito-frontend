@@ -65,6 +65,13 @@ export class MatrixDataStore {
         );
     }
 
+    getSelectedMatrixDataByLocationIdAndCategoryId(locationId: number, categoryId: number) {
+        return this.selectedMatrixData.find(
+            (matrixData) =>
+                matrixData.categoryId === categoryId && matrixData.locationId === locationId,
+        );
+    }
+
     getRootCategory() {
         return this.category ?? (store.matrix.category[0] as unknown as ICategory);
     }

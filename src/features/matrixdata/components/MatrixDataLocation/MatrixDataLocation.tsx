@@ -10,10 +10,13 @@ import { useState } from "react";
 import { Button } from "src/ui/components/Button/Button.tsx";
 
 export const MatrixDataLocation = observer(
-    (props: { matrix: Matrix; location: ILocation; category: ICategory; editable: boolean }) => {
+    (props: { matrix: Matrix; location: ILocation; category: ICategory; editable: boolean; titleSmall: boolean }) => {
         const [settingPrice, setSettingPrice] = useState(false);
 
         let matrixData = store.matrixData.getMatrixDataByLocationIdAndCategoryId(
+            props.location.id,
+            props.category.id,
+        ) ?? store.matrixData.getSelectedMatrixDataByLocationIdAndCategoryId(
             props.location.id,
             props.category.id,
         );
@@ -43,9 +46,10 @@ export const MatrixDataLocation = observer(
                     }}
                     title={props.location.name}
                     disabled={props.matrix.status !== "DRAFT"}
+                    titleSmall={props.titleSmall}
                 />
                 {props.editable && !matrixData?.price && !settingPrice && (
-                    <Button type={"tertiary"} onClick={() => setSettingPrice(true)}>
+                    <Button type={"tertiary"} onClick={() => setSettingPrice(true)} size={"small"}>
                         Задать
                     </Button>
                 )}
@@ -56,6 +60,9 @@ export const MatrixDataLocation = observer(
                         onChange={(event) => {
                             setSettingPrice(true);
                             if (matrixData) {
+                                if (isNaN(Number(event.target.value))){
+                                    return;
+                                }
                                 matrixData.price = event.target.value
                                     ? Number(event.target.value)
                                     : null;
@@ -78,16 +85,18 @@ export const MatrixDataLocation = observer(
                         value={`${matrixData?.price ?? ""}`}
                         endIcon={<IconRuble />}
                         autoFocus={settingPrice}
+                        size={"small"}
                     />
                 )}
                 {!props.editable && (matrixData?.price || settingPrice) && (
                     <Input
-                        style={{ width: "120px" }}
+                        style={{ width: "100px" }}
                         placeholder={"Цена"}
                         onChange={() => {}}
                         value={`${matrixData?.price ?? "-"}`}
                         endIcon={<IconRuble />}
                         disabled={true}
+                        size={"small"}
                     />
                 )}
             </div>
