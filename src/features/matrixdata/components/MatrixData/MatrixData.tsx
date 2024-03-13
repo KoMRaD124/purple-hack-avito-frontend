@@ -231,7 +231,7 @@ export const MatrixData = observer((props: MatrixDataProps) => {
                                             store.matrixData.setCategorySearch(
                                                 store.matrixData.category?.name ?? "",
                                             ),
-                                        100,
+                                        200,
                                     )
                                 }
                             />
@@ -274,7 +274,7 @@ export const MatrixData = observer((props: MatrixDataProps) => {
                                             store.matrixData.setLocationSearch(
                                                 store.matrixData.location?.name ?? "",
                                             ),
-                                        100,
+                                        200,
                                     )
                                 }
                             />
