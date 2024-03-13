@@ -13,7 +13,17 @@
     gap: 20px;
 }
 
+.filterCard {
+    position: sticky;
+    top: 90px;
+}
+
 .mainInfo {
+    display: grid;
+    gap: 24px;
+}
+
+.mainInfoRow {
     display: flex;
     align-items: center;
     gap: 40px;

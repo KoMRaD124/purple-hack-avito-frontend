@@ -10,10 +10,11 @@ interface AdminPageLayoutProps {
     titleChip?: ReactNode;
     children: ReactNode;
     actions?: ReactNode[];
+    onBack?: () => void;
 }
 
 export const AdminPageLayout = (props: AdminPageLayoutProps) => {
-    const { title, children, actions, titleChip }: AdminPageLayoutProps = props;
+    const { title, children, actions, titleChip, onBack }: AdminPageLayoutProps = props;
     const navigate = useNavigate();
 
     const logout = () => {
@@ -34,7 +35,13 @@ export const AdminPageLayout = (props: AdminPageLayoutProps) => {
 
     return (
         <div className={styles.layout}>
-            <Header title={title} titleChip={titleChip} avatar={renderAvatar()} actions={actions} />
+            <Header
+                title={title}
+                titleChip={titleChip}
+                avatar={renderAvatar()}
+                actions={actions}
+                onBack={onBack}
+            />
             <div className={styles.content}>{children}</div>
         </div>
     );

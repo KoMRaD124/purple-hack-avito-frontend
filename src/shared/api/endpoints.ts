@@ -10,4 +10,7 @@ export const GET_ALL_SEGMENTS = transformUrl("/api/admin/segments");
 export const POST_NEW_SET = transformUrl("/api/admin/matrices/activate");
 export const CREATE_NEW_MATRIX = transformUrl("/api/admin/matrices");
 export const GET_ALL_LOGS = transformUrl("/api/admin/audit");
+export const MATRIX_DATA_ENDPOINT = transformUrl("/api/admin/matrixData");
+export const CLONE_ENDPOINT = transformUrl("/api/admin/matrices/clone");
+export const USERS_ENDPOINT = transformUrl("/api/admin/users");
 
