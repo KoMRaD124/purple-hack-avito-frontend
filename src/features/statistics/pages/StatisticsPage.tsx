@@ -495,7 +495,7 @@ export const StatisticsPage = observer(() => {
                     <div className={styles.statisticBodyleft}>
 
                         <div className={styles.buttonblock}>
-                            <Button onClick={() => setActiveCategoryAvg("category")} type={activeCategoryAvg === 'category' ? 'primary' : 'tertiary'} color={activeCategoryCount === 'category' ? 'accent' : 'neutral'}>Категории</Button>
+                            <Button onClick={() => setActiveCategoryAvg("category")} type={activeCategoryAvg === 'category' ? 'primary' : 'tertiary'} color={activeCategoryAvg === 'category' ? 'accent' : 'neutral'}>Категории</Button>
                             <Button onClick={() => setActiveCategoryAvg("service")} type={activeCategoryAvg === 'service' ? 'primary' : 'tertiary'} color={activeCategoryAvg === 'service' ? 'accent' : 'neutral'}>Платные услуги</Button>
                         </div>
                         <div className={styles.grafik}>

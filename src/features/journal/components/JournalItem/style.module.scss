@@ -33,6 +33,17 @@
 
 .sortlistmatrixId {
     margin-left: 33px;
+    overflow: hidden;
+    color: #9C9C9C;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    /* Числовые значения в таблице */
+    font-family: Manrope;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    width: 9px;
 }
 
 .sortlistName {
