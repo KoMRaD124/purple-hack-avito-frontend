@@ -71,6 +71,9 @@ export const JournalPage = observer(() => {
                     <div className={styles.sortlistAction}>
                         Событие
                     </div>
+                    <div className={styles.sortlistId}>
+                        ID
+                    </div>
                     <div className={styles.sortlistName}>
                         Название
                     </div>
