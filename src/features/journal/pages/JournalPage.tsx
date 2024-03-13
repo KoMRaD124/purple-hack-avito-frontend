@@ -37,7 +37,6 @@ export const JournalPage = observer(() => {
                 return obj;
         }
     })
-    console.log(updatedArray[0])
     const filtredArray = updatedArray.filter((item: any) =>
         item.name.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase()) ||
         item.eventType.toLocaleLowerCase().includes(searchValue) ||

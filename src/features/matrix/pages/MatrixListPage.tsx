@@ -95,13 +95,11 @@ export const MatrixListPage = observer(() => {
             : numericAValue > numericBValue ? 1 : numericAValue < numericBValue ? -1 : 0;
     });
     
-    console.log(currentBaselineId)
     const [changedDicountMatrix, setChangedDicountMatrix] = useState<number[]>([])
     const handleCheckboxChange = (itemId: number) => {
         const isSelected = selectedCheckboxes.includes(itemId);
         const isSelectedChanged = changedDicountMatrix.includes(itemId);
 
-        console.log(selectedCheckboxes)
         if (isSelected) {
             setSelectedCheckboxes(selectedCheckboxes.filter(id => id !== itemId));
         } else {
@@ -129,7 +127,6 @@ export const MatrixListPage = observer(() => {
         />;
     });
     const [selectedCheckboxes, setSelectedCheckboxes] = useState<number[]>([]);
-    console.log(selectedCheckboxes)
 
     const [open, setOpen] = useState(false)
     const [openSuccesfull, setOpenSuccesfull] = useState(false)
@@ -155,7 +152,6 @@ export const MatrixListPage = observer(() => {
 
 
     }
-    console.log(data)
     const sendNewMatrix = () => {
         axios.post(POST_NEW_SET, data)
             .then(() => {

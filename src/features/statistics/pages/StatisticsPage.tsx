@@ -319,7 +319,6 @@ export const StatisticsPage = observer(() => {
             </div>
         </div>
     const counterValue = Number(isCheckedConv) + Number(isCheckedAvg) + Number(isCheckedCount) + Number(isCheckedCountAdv)
-    console.log(activeSort)
     useEffect(()=>{
         store.matrix.getLocation()
     },[])
