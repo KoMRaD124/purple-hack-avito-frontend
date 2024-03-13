@@ -7,6 +7,7 @@ import { LoginPage } from "src/ui/components/LoginPage/LoginPage";
  */import { MatrixListPage } from "src/features/matrix/pages/MatrixListPage";
 import { MatrixViewPage } from "src/features/matrixdata/pages/MatrixViewPage.tsx";
 import { JournalPage } from "src/features/journal/pages/JournalPage";
+import { UsersPage } from "src/features/user/pages/UsersPage.tsx";
 
 export const routes: RouteObject[] = [
     {
@@ -28,6 +29,10 @@ export const routes: RouteObject[] = [
                     {
                         path: "/logs",
                         element: <JournalPage />,
+                    },
+                    {
+                        path: "/users",
+                        element: <UsersPage />,
                     },
                     {
                         path: "/matrix/:id/view",

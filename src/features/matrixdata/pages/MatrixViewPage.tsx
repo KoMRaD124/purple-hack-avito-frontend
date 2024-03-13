@@ -8,12 +8,16 @@ import { MatrixData } from "src/features/matrixdata/components/MatrixData/Matrix
 import { IconBasket } from "src/ui/assets/icons";
 import Modal from "@mui/material/Modal";
 import { CloneMatrix } from "src/features/matrixdata/components/CloneMatrix/CloneMatrix.tsx";
+import {
+    SaveMatrixDataSuccesfull
+} from "src/features/matrixdata/components/SaveMatrixDataSuccesfull/SaveMatrixDataSuccesfull.tsx";
 
 export const MatrixViewPage = observer(() => {
     const params = useParams<{ id: string }>();
     const matrix = store.matrix.allMatrix.find((elem) => elem.id.toString() === params.id);
     const navigate = useNavigate();
     const [openClone, setOpenClone] = useState(false);
+    const [openSuccessful, setOpenSuccessful] = useState(false);
 
     useEffect(() => {
         if (!store.matrix.allMatrix.length) {
@@ -41,7 +45,7 @@ export const MatrixViewPage = observer(() => {
                 {
                     ACTIVE: "positive",
                     INACTIVE: "neutral",
-                    DRAFT: "neutral",
+                    DRAFT: "neutral"
                 }[matrix.status] as any
             }
             clickable={false}
@@ -50,7 +54,7 @@ export const MatrixViewPage = observer(() => {
                 {
                     ACTIVE: "Активно",
                     INACTIVE: "Неактивно",
-                    DRAFT: "Черновик",
+                    DRAFT: "Черновик"
                 }[matrix.status]
             }
         </Button>
@@ -60,14 +64,20 @@ export const MatrixViewPage = observer(() => {
         const actions = [];
         if (matrix.status === "ACTIVE" || matrix.status === "INACTIVE") {
             actions.push(
-                <Button key={"clone"} onClick={() => setOpenClone(true)}>Создать копию и редактировать</Button>,
+                <Button key={"clone"} onClick={() => setOpenClone(true)}>
+                    Создать копию и редактировать
+                </Button>,
                 <Button key={"logs"} type={"tertiary"} onClick={() => navigate("/logs")}>
                     Журнал изменений
-                </Button>,
+                </Button>
             );
         } else {
             actions.push(
-                <Button key={"setPrice"} type={"secondary"}>
+                <Button
+                    key={"setPrice"}
+                    type={"secondary"}
+                    disabled={!store.matrixData.selectedMatrixData.length}
+                >
                     Задать цену
                 </Button>,
                 <Button
@@ -75,12 +85,16 @@ export const MatrixViewPage = observer(() => {
                     type={"secondary"}
                     color={"negative"}
                     startIcon={<IconBasket />}
+                    disabled={!store.matrixData.selectedMatrixData.length}
                 >
                     Удалить цену
                 </Button>,
-                <Button key={"save"} style={{ marginLeft: "auto" }}>
+                <Button key={"save"} style={{ marginLeft: "auto" }} onClick={() => {
+                    store.matrixData.saveMatrixData();
+                    setOpenSuccessful(true);
+                }}>
                     Сохранить
-                </Button>,
+                </Button>
             );
         }
         return actions;
@@ -96,6 +110,9 @@ export const MatrixViewPage = observer(() => {
             {matrix ? <MatrixData matrix={matrix} /> : "Загрузка..."}
             <Modal open={openClone}>
                 <CloneMatrix onClose={() => setOpenClone(false)} matrix={matrix} />
+            </Modal>
+            <Modal open={openSuccessful}>
+                <SaveMatrixDataSuccesfull onClick={() => setOpenSuccessful(false)} />
             </Modal>
         </AdminPageLayout>
     );

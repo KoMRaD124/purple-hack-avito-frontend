@@ -27,13 +27,16 @@ export const MatrixData = observer((props: MatrixDataProps) => {
         name: `Сегмент-${number}`,
         value: number,
     }));
-    const filteredSegments = segments.filter((item) =>
-        item.name.toLowerCase().includes(segmentName.toLowerCase()),
-    );
+    const filteredSegments =
+        segmentName === `Сегмент-${matrix.segmentId}`
+            ? segments
+            : segments.filter((item) =>
+                  item.name.toLowerCase().includes(segmentName.toLowerCase()),
+              );
     const handleInputChangeSegment = (event: ChangeEvent<HTMLInputElement>): void => {
         setSegmentName(event.target.value);
         if (segmentName !== event.target.value) {
-            matrix.segmentId = null;
+            // matrix.segmentId = null;
         }
     };
     useEffect(() => {
@@ -108,6 +111,11 @@ export const MatrixData = observer((props: MatrixDataProps) => {
                                                 </ButtonIcon>
                                             )
                                         }
+                                        onBlur={() => {
+                                            if (segmentName !== `Сегмент-${matrix.segmentId}`) {
+                                                setSegmentName(`Сегмент-${matrix.segmentId}`);
+                                            }
+                                        }}
                                     />
                                 </DropdownList>
                             </div>
@@ -137,14 +145,50 @@ export const MatrixData = observer((props: MatrixDataProps) => {
                         </div>
                     }
                 >
-                    <MatrixDataCategory
-                        matrix={matrix}
-                        category={store.matrixData.getRootCategory()}
-                        root={true}
-                    />
-                    {store.matrixData.getCategories().map((category) => (
-                        <MatrixDataCategory matrix={matrix} category={category} />
-                    ))}
+                    {store.matrixData.filter === "withPrice" &&
+                        (store.matrixData.matrixData.some(
+                            (d) =>
+                                d.categoryId === store.matrixData.getRootCategory().id &&
+                                d.price !== null,
+                        ) && (
+                            <MatrixDataCategory
+                                matrix={matrix}
+                                category={store.matrixData.getRootCategory()}
+                                root={true}
+                            />
+                        ))}
+                    {store.matrixData.filter !== "withPrice" && (
+                        <MatrixDataCategory
+                            matrix={matrix}
+                            category={store.matrixData.getRootCategory()}
+                            root={true}
+                        />
+                    )}
+                    {store.matrixData.filter === "withPrice" &&
+                        store.matrixData
+                            .getCategories()
+                            .filter((c) =>
+                                store.matrixData.matrixData.some(
+                                    (d) => d.categoryId === c.id && d.price !== null,
+                                ),
+                            )
+                            .map((category) => (
+                                <MatrixDataCategory
+                                    matrix={matrix}
+                                    category={category}
+                                    key={category.id}
+                                />
+                            ))}
+                    {store.matrixData.filter !== "withPrice" &&
+                        store.matrixData
+                            .getCategories()
+                            .map((category) => (
+                                <MatrixDataCategory
+                                    matrix={matrix}
+                                    category={category}
+                                    key={category.id}
+                                />
+                            ))}
                 </Card>
             </div>
             <div className={styles.column}>

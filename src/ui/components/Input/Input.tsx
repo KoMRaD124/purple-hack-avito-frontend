@@ -22,6 +22,7 @@ interface InputProps {
     onFocus?: () => void;
     onBlur?: () => void;
     disabled?: boolean;
+    autoFocus?: boolean;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
@@ -42,6 +43,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
         onBlur: propOnBlur,
         disabled,
         style,
+        autoFocus,
     }: InputProps = props;
 
     const inputClassName = clsx(
@@ -103,6 +105,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
                         onBlur={handleInputBlur}
                         placeholder={placeholder}
                         disabled={disabled}
+                        autoFocus={autoFocus}
                     />
 
                     {endIcon && (

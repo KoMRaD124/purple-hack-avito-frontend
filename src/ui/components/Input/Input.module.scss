@@ -50,6 +50,10 @@
 
     &:has(.inputBorder.disabled) {
         background-color: disabled-primary($color-components-background-neutral-pale);
+
+        svg path {
+            fill: #afafaf;
+        }
     }
 }
 

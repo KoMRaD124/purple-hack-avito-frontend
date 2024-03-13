@@ -8,7 +8,7 @@ import { Counter } from "src/ui/components/Counter/Counter.tsx";
 import { MatrixData as Matrix } from "src/features/matrix/pages/MatrixListPage";
 import { store } from "src/app/stores/AppStore.ts";
 import { clsx } from "clsx";
-import { Checkbox } from "src/ui/components/Checkbox/Checkbox.tsx";
+import { MatrixDataLocation } from "src/features/matrixdata/components/MatrixDataLocation/MatrixDataLocation.tsx";
 
 interface MatrixDataCategoryProps {
     matrix: Matrix;
@@ -19,10 +19,9 @@ interface MatrixDataCategoryProps {
 export const MatrixDataCategory = observer((props: MatrixDataCategoryProps) => {
     const [expanded, setExpanded] = useState(false);
 
-    const allLocationIds = [
-        store.matrixData.getRootLocation(),
-        ...store.matrixData.getLocations(),
-    ].filter(Boolean).map((l) => l.id);
+    const allLocationIds = [store.matrixData.getRootLocation(), ...store.matrixData.getLocations()]
+        .filter(Boolean)
+        .map((l) => l.id);
 
     if (!props.category) {
         return null;
@@ -46,6 +45,7 @@ export const MatrixDataCategory = observer((props: MatrixDataCategoryProps) => {
                             value={
                                 store.matrixData.matrixData.filter(
                                     (d) =>
+                                        d.price !== null &&
                                         props.category.id === d.categoryId &&
                                         allLocationIds.includes(d.locationId),
                                 ).length
@@ -58,19 +58,21 @@ export const MatrixDataCategory = observer((props: MatrixDataCategoryProps) => {
             {expanded && (
                 <div className={styles.content}>
                     <div className={styles.rootLocationRow}>
-                        <Checkbox
-                            onChange={() => {}}
-                            title={store.matrixData.getRootLocation().name}
-                            disabled={props.matrix.status !== "DRAFT"}
+                        <MatrixDataLocation
+                            matrix={props.matrix}
+                            location={store.matrixData.getRootLocation()}
+                            category={props.category}
+                            editable={props.matrix.status === "DRAFT"}
                         />
                     </div>
                     <div className={styles.childLocations}>
                         {store.matrixData.getLocations().map((location) => (
                             <div className={styles.childLocationRow} key={location.id}>
-                                <Checkbox
-                                    onChange={() => {}}
-                                    title={location.name}
-                                    disabled={props.matrix.status !== "DRAFT"}
+                                <MatrixDataLocation
+                                    matrix={props.matrix}
+                                    location={location}
+                                    category={props.category}
+                                    editable={props.matrix.status === "DRAFT"}
                                 />
                             </div>
                         ))}

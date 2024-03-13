@@ -16,11 +16,11 @@ export interface ILocation {
 }
 
 export interface MatrixData {
-    id: number;
+    id: number | null;
     matrixId: number;
     categoryId: number;
     locationId: number;
-    price: number;
+    price: number | null;
 }
 
 export class MatrixDataStore {
@@ -30,6 +30,7 @@ export class MatrixDataStore {
     locationSearch = "";
     filter: "all" | "withPrice" = "all";
     matrixData: MatrixData[] = [];
+    selectedMatrixData: MatrixData[] = [];
 
     constructor() {
         makeAutoObservable(this);
@@ -46,6 +47,22 @@ export class MatrixDataStore {
         } catch (e) {
             console.error(e);
         }
+    }
+
+    async saveMatrixData() {
+        try {
+            const response = await axios.put(MATRIX_DATA_ENDPOINT, this.matrixData);
+            this.matrixData = response.data;
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    getMatrixDataByLocationIdAndCategoryId(locationId: number, categoryId: number) {
+        return this.matrixData.find(
+            (matrixData) =>
+                matrixData.categoryId === categoryId && matrixData.locationId === locationId,
+        );
     }
 
     getRootCategory() {
