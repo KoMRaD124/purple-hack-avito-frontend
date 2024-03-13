@@ -7,16 +7,18 @@ import { IconClear, IconSearch } from 'src/ui/assets/icons'
 import { ButtonIcon } from 'src/ui/components/ButtonIcon/ButtonIcon'
 import { store } from 'src/app/stores/AppStore'
 import { JournalItem } from '../components/JournalItem/JournalItem'
+import { useSearchParams } from "react-router-dom";
 
 
 
 
 
 export const JournalPage = observer(() => {
-
-    const [searchValue, setSearchValue] = useState("")
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchValue, setSearchValue] = useState(searchParams.get("search") ?? "");
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
         setSearchValue(event.target.value);
+        setSearchParams("", {replace: true});
     };
     useEffect(() => {
         store.journal.geAllLogs()

@@ -28,7 +28,7 @@ export interface PopoverBaseProps {
     maxWidth?: number;
     maxHeight?: number;
     show?: boolean;
-    width?: number
+    width?: number;
     setShow?: (show: boolean) => void;
     fullWidth?: boolean;
 }
@@ -83,9 +83,10 @@ export const PopoverBase = (props: PopoverBaseProps) => {
     const initializeEventListeners = (element: HTMLElement) => {
         if (triggerEvent === "click") {
             element.addEventListener("click", handleMouseClick);
+            element.addEventListener("input", handleInput);
             document.addEventListener("click", handleDocumentClick);
             if (show) {
-                window.addEventListener("scroll", handleWindowScroll);
+                document.addEventListener("scroll", handleWindowScroll, true);
                 window.addEventListener("resize", handleWindowResize);
             }
         }
@@ -97,7 +98,8 @@ export const PopoverBase = (props: PopoverBaseProps) => {
             element.removeEventListener("click", handleMouseClick);
             element.removeEventListener("mouseenter", handleMouseEnter);
             element.removeEventListener("mouseleave", handleMouseLeave);
-            window.removeEventListener("scroll", handleWindowScroll);
+            element.removeEventListener("input", handleInput);
+            document.removeEventListener("scroll", handleWindowScroll);
             window.removeEventListener("resize", handleWindowResize);
             document.removeEventListener("click", handleDocumentClick);
         };
@@ -155,6 +157,12 @@ export const PopoverBase = (props: PopoverBaseProps) => {
             offset -= popoverSize - ARROW_MARGIN - ARROW_WIDTH / 2;
         }
         return offset;
+    };
+
+    const handleInput = () => {
+        setTimeout(() => {
+            setShow(true);
+        }, 100);
     };
 
     const handleMouseClick = () => {

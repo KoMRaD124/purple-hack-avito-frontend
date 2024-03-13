@@ -10,7 +10,7 @@ interface CounterProps {
     className?: string;
 }
 
-const COUNTER_MAX_VALUE = 99;
+const COUNTER_MAX_VALUE = 999;
 
 export const Counter = ({
     value,
@@ -24,8 +24,9 @@ export const Counter = ({
         styles[type],
         styles[color],
         styles[size],
+        {[styles.bigValue]: value > 99},
         className,
     );
 
-    return <div className={counterClassName}>{Math.min(value, COUNTER_MAX_VALUE)}</div>;
+    return <div className={counterClassName}>{value > 999 && "+"}{Math.min(value, COUNTER_MAX_VALUE)}</div>;
 };

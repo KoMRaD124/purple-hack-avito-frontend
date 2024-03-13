@@ -34,6 +34,9 @@ import IconMatrix from "./Matrix.svg?react";
 import IconJournal from "./Journal.svg?react";
 import IconStatistics from "./Statistics.svg?react";
 
+import IconBack from "./Back.svg?react";
+import IconBasket from "./Basket.svg?react";
+import IconRuble from "./Ruble.svg?react";
 
 export {
     IconAttention,
@@ -67,5 +70,8 @@ export {
     IconArrowDown,
     IconJournal,
     IconMatrix,
+    IconBack,
+    IconBasket,
+    IconRuble,
     IconStatistics
 };

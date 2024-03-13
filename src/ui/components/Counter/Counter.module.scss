@@ -71,4 +71,10 @@
         height: 20px;
         font-size: 12px;
     }
+
+    &.bigValue {
+        padding: 3px 4px;
+        width: auto;
+        border-radius: 4px;
+    }
 }

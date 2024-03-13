@@ -1,6 +1,6 @@
 import { Input } from "src/ui/components/Input/Input"
 import styles from "./styles.module.scss"
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, useEffect, useState } from "react";
 import { RadioGroup } from "src/ui/components/RadioGroup/RadioGroup"
 import { RadioButton } from "src/ui/components/RadioButton/RadioButton"
 
@@ -10,12 +10,14 @@ import { observer } from "mobx-react-lite"
 /* import { DropdownListOption } from "src/ui/components/DropdownList/DropdownList.types"
  */import { Button } from "src/ui/components/Button/Button"
 import axios from "axios"
-import { CREATE_NEW_MATRIX } from "src/shared/api/endpoints"
+import { CLONE_ENDPOINT } from "src/shared/api/endpoints";
 import { useNavigate } from "react-router-dom"
+import { MatrixData } from "src/features/matrix/pages/MatrixListPage.tsx";
+import { CircularProgress } from "@mui/material";
 
 
 
-export const CreateMatrix = observer(({ onClose }: { onClose: () => void }) => {
+export const CloneMatrix = observer(({ onClose, matrix }: { onClose: () => void, matrix: MatrixData }) => {
     const [nameValue, setNameValue] = useState("")
     const [segmentId, setSegmentId] = useState<number | null>(null)
     const [segmentName, setSegmentName] = useState("")
@@ -27,7 +29,15 @@ export const CreateMatrix = observer(({ onClose }: { onClose: () => void }) => {
         setSegmentName(event.target.value);
         if (segmentName !== event.target.value) setSegmentId(null)
     };
-    const [radioValue, setRadioValue] = useState("BASELINE")
+    const [radioValue, setRadioValue] = useState(matrix.type)
+    const [cloning, setCloning] = useState(false);
+
+    useEffect(() => {
+        if (matrix.segmentId) {
+            setSegmentId(matrix.segmentId);
+            setSegmentName(`Сегмент-${matrix.segmentId}`);
+        }
+    }, [matrix.segmentId]);
 
 
     const segments = store.matrix.segment.map((number) => ({
@@ -43,24 +53,27 @@ export const CreateMatrix = observer(({ onClose }: { onClose: () => void }) => {
     )
     const segmentnumber = radioValue === "BASELINE" ? null : segmentId
     const data = {
-        name: nameValue,
+        id: matrix.id,
+        newName: nameValue,
         type: radioValue,
         segmentId: segmentnumber
     }
     const onClickCreate = () => {
-        axios.post(CREATE_NEW_MATRIX, data)
+        setCloning(true);
+        axios.post(CLONE_ENDPOINT, data)
             .then((response) => {
+                setCloning(false);
                 store.matrix.pushMatrix(response.data)
                 navigate(`/matrix/${response.data.id}/view`)
+                onClose();
             })
     }
-    console.log(data)
     const disabledButton = nameValue && (radioValue === "BASELINE" ? true : segmentnumber)
     return (
         <div className={styles.container}>
-            <div className={styles.header}>Новая матрица</div>
+            <div className={styles.header}>Создание копии</div>
             <div className={styles.nameInput}>
-                <Input value={nameValue} formName="Название" onChange={handleInputChange} placeholder="Название матрицы" />
+                <Input value={nameValue} formName="Название" onChange={handleInputChange} placeholder="Новое название" />
             </div>
             <div className={styles.matrixType}>
                 <div className={styles.matrixTypeHead}>Тип матрицы</div>
@@ -83,8 +96,18 @@ export const CreateMatrix = observer(({ onClose }: { onClose: () => void }) => {
                     />
                 </DropdownList>
             </div>}
+            {cloning &&
+                <div style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    flexGrow: "1"
+                }}>
+                    <CircularProgress/>
+                </div>
+            }
             <div className={styles.buttonBlock}>
-                <Button onClick={onClickCreate} disabled={!disabledButton}>Далее</Button>
+                <Button onClick={onClickCreate} disabled={!disabledButton || cloning}>Далее</Button>
                 <Button type='secondary' onClick={onClose}>Отмена</Button>
 
             </div>

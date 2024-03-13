@@ -29,6 +29,15 @@ export class MatrixStore {
         }
     }
 
+    async saveMatrix(matrix: MatrixData) {
+        try {
+            await axios.put(GET_ALL_MATRIX, matrix);
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
     async getLocation() {
         try {
             const response = await axios.get(GET_ALL_LOCATION);

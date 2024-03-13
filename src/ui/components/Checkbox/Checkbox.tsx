@@ -11,6 +11,7 @@ interface CheckboxProps {
     intermediate?: boolean;
     disabled?: boolean;
     color?: "neutral" | "accent" | "positive";
+    titleSmall?: boolean;
 }
 
 export const Checkbox = (props: CheckboxProps) => {
@@ -21,6 +22,7 @@ export const Checkbox = (props: CheckboxProps) => {
         intermediate,
         disabled,
         color = "neutral",
+        titleSmall
     }: CheckboxProps = props;
 
     const [checked, setChecked] = useState(props.checked ?? false);
@@ -56,7 +58,7 @@ export const Checkbox = (props: CheckboxProps) => {
         <button className={checkboxClassName} onClick={handleClick} disabled={disabled}>
             {getCheckboxIcon()}
             <div>
-                <div className={styles.title}>{title}</div>
+                <div className={clsx(styles.title, {[styles.small]: titleSmall})}>{title}</div>
                 {subtitle && <div className={styles.subtitle}>{subtitle}</div>}
             </div>
         </button>
