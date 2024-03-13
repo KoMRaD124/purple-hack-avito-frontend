@@ -60,7 +60,7 @@ export const MatrixListPage = observer(() => {
 
     }, [currentActiveBaselineId, store.matrix.activeMatrixID])
     const filteredResults = store.matrix.allMatrix.filter((item: any) =>
-        item.name.toLowerCase().includes(searchValue.toLowerCase())
+        item.name.toLowerCase().includes(searchValue.toLowerCase()) || item.id.toString().includes(searchValue)
     );
     const filteredSecontTimeResults = filteredResults.filter((item: any) => {
         switch (activeButton) {
@@ -169,7 +169,7 @@ export const MatrixListPage = observer(() => {
                         <Input
                             value={searchValue}
                             onChange={handleInputChange}
-                            placeholder="Название матрицы"
+                            placeholder="Название матрицы или ID"
                             startIcon={<IconSearch />}
                             endIcon={
                                 searchValue.length > 0 && <ButtonIcon
@@ -217,7 +217,7 @@ export const MatrixListPage = observer(() => {
                     <div></div>
                     <div className={styles.sortID}>ID</div>
                     <div className={styles.sortName}>Название</div>
-                    
+
 
                     <div className={styles.sortType}>
                         <Button onClick={() => OnClickTypeButton("type")}
@@ -248,6 +248,8 @@ export const MatrixListPage = observer(() => {
                 <div className={styles.matrixList}>
                     <RadioGroup value={currentBaselineId} onChange={setCurrentBaselineId}>
                         {matrixArray.length > 0 ? matrixArray : <div className={styles.nf}> <IconSearch />Не найдена матрица с таким названием...</div>}</RadioGroup>
+
+
                 </div>
                 <Modal open={open} /* onClose={handleClose} */><CreateMatrix onClose={handleCloseCreate} /></Modal>
                 <Modal open={openSuccesfull} onClose={handleClose}><MatrixSuccesfull onClick={handleClose} currentBaseline={currentBaselineId} currentDiscount={selectedCheckboxes} /></Modal>

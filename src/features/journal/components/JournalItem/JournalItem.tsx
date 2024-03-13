@@ -1,6 +1,7 @@
 import { Button } from 'src/ui/components/Button/Button';
 import styles from './style.module.scss'
-export const JournalItem = ({ action, name, date, status, author }: { action: string, name: string, date: string, status: string, author: string }) => {
+import { useNavigate } from 'react-router-dom';
+export const JournalItem = ({ action, name, date, status, author, matrixId }: { action: string, name: string, date: string, status: string, author: string, matrixId: string }) => {
 
 
 
@@ -23,8 +24,9 @@ export const JournalItem = ({ action, name, date, status, author }: { action: st
 
 
     }
+    const navigate = useNavigate()
     return (
-        <div className={styles.sortlist}>
+        <div onClick={() => navigate(`/matrix/${matrixId}/view`)} className={styles.sortlist}>
             <div className={styles.sortlistAction}>
                 {action}
             </div>

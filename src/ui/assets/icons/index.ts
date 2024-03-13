@@ -32,6 +32,8 @@ import IconArrowDown from "./Arrow-down.svg?react";
 
 import IconMatrix from "./Matrix.svg?react";
 import IconJournal from "./Journal.svg?react";
+import IconStatistics from "./Statistics.svg?react";
+
 
 export {
     IconAttention,
@@ -64,5 +66,6 @@ export {
     IconPlay,
     IconArrowDown,
     IconJournal,
-    IconMatrix
+    IconMatrix,
+    IconStatistics
 };

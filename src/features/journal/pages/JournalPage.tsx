@@ -47,6 +47,7 @@ export const JournalPage = observer(() => {
             date={item.timestamp}
             author={item.userEmail}
             status={item.status}
+            matrixId={item.matrixId}
         />
     })
 
