@@ -328,7 +328,7 @@ export const StatisticsPage = observer(() => {
             <Button onClick={toggleDrawer(true)} key={"logs"} type={"secondary"}>
                 Готовые отчёты
             </Button>,
-        ]}>
+        ]} sticky={false}>
             <div className={styles.buttonsContainer}>
                 <Button onClick={() => setActiveSort("all")} color='neutral' type={activeSort === "all" ? "primary" : "tertiary"}>Все</Button>
                 <Button onClick={() => setActiveSort("salesCount")} color='neutral' type={activeSort === "salesCount" ? "primary" : "tertiary"}>Количество продаж</Button>
@@ -375,7 +375,7 @@ export const StatisticsPage = observer(() => {
                                     setTimeout(() =>
                                         store.matrixData.setLocationSearch(
                                             store.matrixData.location?.name ?? "",
-                                        ), 100
+                                        ), 200
                                     )
                                 }
                             />
@@ -475,7 +475,7 @@ export const StatisticsPage = observer(() => {
                                     setTimeout(() =>
                                         store.matrixData2.setLocationSearch(
                                             store.matrixData2.location?.name ?? "",
-                                        ), 100
+                                        ), 200
                                     )
                                 }
                             />
@@ -575,7 +575,7 @@ export const StatisticsPage = observer(() => {
                                     setTimeout(() =>
                                         store.matrixData3.setLocationSearch(
                                             store.matrixData3.location?.name ?? "",
-                                        ), 100
+                                        ), 200
                                     )
                                 }
                             />
@@ -675,7 +675,7 @@ export const StatisticsPage = observer(() => {
                                     setTimeout(() =>
                                         store.matrixData4.setLocationSearch(
                                             store.matrixData4.location?.name ?? "",
-                                        ), 100
+                                        ), 200
                                     )
                                 }
                             />
